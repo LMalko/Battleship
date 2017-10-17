@@ -2,14 +2,27 @@ from main import *
 from player import *
 from ship import *
 from square import *
+import sys
 
 
 class Ocean():
 
-    fields = []
+    # fields = [[Square()*10]*10]
 
-    def __init__(self, list):
-        pass
+    def __init__(self, coordinants_dictionary):
+        self.coordinants_dictionary = coordinants_dictionary
+        self.fields = [[Square()*10]*10]    # 2 fory i append ##
 
     def set_ships_on_board(self, list):
-        pass
+
+        for ship in self.coordinants_dictionary.keys():     # dla klucza = nazwie klasy w str
+            class_name = getattr(sys.modules[__name__], ship)
+            for coordinants in self.coordinants_dictionary.get(ship):   # wyciągnij wartość dla klucza(lista list ze współrzędnymi)
+                del self.fields[coordinants[0]][coordinants[1]]     # wyczyść pozycję z pustego Square()
+                self.fields[coordinants[0]].insert(coordinants[1], Square(class_name()))
+                        # wstaw instancję Square zaimplementowaną konkretnym shipem 
+
+'''
+key: [[1,2],[3,4], [5,6]]
+key: [[1,2],[3,4], [5,6], [7,8]]]
+'''
