@@ -1,3 +1,5 @@
+
+import random
 from main import *
 from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
@@ -19,20 +21,29 @@ class Player(GameFlow):
         y = coordinates[1]
         opponent.board[x][y]
 
+    def choose_ships_placement(self):
+        """Choose ships placement (coordinates) by Player."""
+        self._set_coordinates()
+
 
 class Human(Player):
     """This is User-Player class."""
 
     def __init__(self, name):
         self.name = name
-        # self.board = Ocean()
+        # self.board = Ocean()  # create board
         self.choose_ships_placement()
 
-    def choose_ships_placement(self):
-        """Player choose ships placement (coordinates)."""
-        self._input_coordinates()
+    def choose_attack_coordinates(self):
+        """
+        Choose attack (coordinates) by Player.
 
-    def _input_coordinates(self):
+        Returns coordinates in list [x, y]
+        """
+        print("It's bombard time, please specify attack coordinates:\n")
+        return self._input_and_check_coordinates()
+
+    def _set_coordinates(self):
         """
         Input coordinates by User (format: A1, B1, etc..).
 
@@ -50,32 +61,15 @@ class Human(Player):
             Human.choose_ship_picture(ship)
             ship_coordinates = []
             for element in range(ship.hit_points):
-                coordinate = self._check_inputed_coordinates()
-                # row_index = ""
-                # while not row_index or row_index not in correct_letters:
-                #     row_index = input(type_letter).upper()
-                #
-                # coordinate.append(correct_letters.index(row_index))
-                #
-                # while True:
-                #     try:
-                #         column_index = int(input(type_number))
-                #         if column_index in range(1, 11):
-                #             coordinate.append(column_index - 1)
-                #             break
-                #         else:
-                #             print(invalid_input_info)
-                #
-                #     except:
-                #         print(invalid_input_info)
+                coordinate = self._input_and_check_coordinates()
                 ship_coordinates.append(coordinate)
                 print(ship_coordinates)
-
+            # BĘDZIE ZUPEŁNIE INACZEJ
             # metoda Michała - walidacja
             all_ships_coordinates[ship.__name__] = ship_coordinates
             print(all_ships_coordinates)  # temporary
 
-    def _check_inputed_coordinates(self):
+    def _input_and_check_coordinates(self):
         """
         Take coordinates from Player.
 
@@ -136,18 +130,23 @@ class AI(Player):
     """This is AI-Player class."""
 
     name = "AI"
-    intelligence = 1
+    intelligence = 1  # determines effectiveness of bombard
 
     def __init__(self):
-        self.board = Ocean()
-        # self.get_my_ships()
+        # self.board = Ocean()
+        self.choose_ships_placement()
 
-    def generate_ships_placement(self):
+    def _set_coordinates(self):
         """AI generate ships placement (coordinates)."""
         pass  # tutaj metoda Michała
 
-# jarek = Human("Jarek")
+    def choose_attack_coordinates(self):
+        """
+        Choose attack (coordinates) by AI.
 
-
-if __name__ == "__main__":
-    main()
+        Returns coordinates in list [x, y]
+        """
+        if self.intelligence == 1:
+            x = random.randint(0, 9)
+            y = random.randint(0, 9)
+        return [x, y]
