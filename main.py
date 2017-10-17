@@ -1,9 +1,6 @@
 import os
 import time
-from player import *
-from ocean import *
-from ship import *
-from square import *
+from game_flow import *
 
 
 def delay_print(s):
