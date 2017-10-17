@@ -1,17 +1,17 @@
 
 import random
-from main import *
+# from main import *
 from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
 from square import Square
-from game_flow import GameFlow
+# from game_flow import GameFlow
 
 
-class Player(GameFlow):
+class Player():
     """Abstract Player class."""
     name = "Noname"
     # Player's availible ships:
-    ships = [Destroyer, Submarine, Cruiser, Battleship, Carrier]
+    ships = [Destroyer]  # , Submarine, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board = None  # Ocean object
 
@@ -25,7 +25,8 @@ class Player(GameFlow):
         # x = coordinates[0]
         # y = coordinates[1]
         # opponent.board[x][y]
-        return coordinates  # może to wystarczy?
+        # return coordinates  # może to wystarczy?
+        pass
 
     def choose_ships_placement(self):
         """
@@ -34,7 +35,8 @@ class Player(GameFlow):
         Returns dict with ship coordinates, eg.
         {"Destroyer": [[0, 0], [0, 1], "Submarine": ...}
         """
-        return self._set_coordinates()
+        self._set_coordinates()
+        # pass
 
 
 class Human(Player):
@@ -42,10 +44,10 @@ class Human(Player):
 
     def __init__(self, name):
         self.name = name
-        coordinates = self.choose_ships_placement()
-        print(coordinates)
-        print(type(coordinates))
-        self.board = Ocean(coordinates)  # create board
+        self.my_ships = self.choose_ships_placement()
+        print(self.my_ships)
+        print(type(self.my_ships))
+        self.board = Ocean(self.my_ships)  # create board
 
     def choose_attack_coordinates(self):
         """
@@ -150,8 +152,9 @@ class AI(Player):
     intelligence = 1  # determines effectiveness of bombard
 
     def __init__(self):
-        coordinates = self.choose_ships_placement()
-        self.board = Ocean(coordinates)  # create board
+        self.my_ships = self.choose_ships_placement()
+        print(self.my_ships)
+        # self.board = Ocean(self.my_ships)  # create board
 
     def _set_coordinates(self):
         """
@@ -180,8 +183,8 @@ class AI(Player):
         return [x, y]
 
 
-# jarek = Human("Jarek")
-# comp = AI()
+jarek = Human("Jarek")
+comp = AI()
 # print(jarek.choose_attack_coordinates())
 # print(comp.choose_attack_coordinates())
 # print(jarek.board)
