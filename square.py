@@ -1,8 +1,8 @@
-from main import *
-from ocean import *
-from player import *
+# from main import *
+# from ocean import *
+# from player import *
 from ship import *
-from game_flow import *
+# from game_flow import *
 
 
 class Square():
@@ -16,10 +16,11 @@ class Square():
 
     def was_hit(self):
 
-        self.hit_count = 1
-        self.handle_hit()
+        self.hit_count += 1
+        if self.hit_count <= 1:
+            self.handle_hit()
 
-    def handle_hit(self):
+    def handle_hit(self):   # __handle_hit bo nie ma być wywoływana spoza klasy A.
         
         if isinstance(self.associated_class, Ship):
             self.associated_class.decrement_hp()
@@ -27,9 +28,17 @@ class Square():
     def __str__(self):
 
         if not self.associated_class:
-            print(".")
+            return "."
         elif self.hit_count > 0:
-            print("X")
+            return "X"
         else:
-            print("O")
+            return "O"
         
+
+# boat = Square(Battleship())
+# titanic = Square(Battleship())
+# titanic.was_hit()
+# water = Square()
+# print('boat', boat)
+# print('ocean', water)
+# print('titanic', titanic)
