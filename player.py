@@ -16,18 +16,6 @@ class Player(GameFlow):
     def perform_hit(self, opponent, coordinates):
         pass  # czekam na Anię :)
 
-    # def set_my_ships_coordinates(self, my_ships_coordinates):
-    #     """
-    #     Define Player's ships.
-    #
-    #     my_ships_coordinates (dict) contains ships with coordinates:
-    #     ("ship class": [[x, y], [x, y], [x, y]], eg.
-    #     "Destroyer": [[0, 1], [1, 1], [2, 1]]
-    #     x, y: int
-    #     """
-    #     self.set_my_ships_coordinates = set_my_ships_coordinates
-
-
 class Human(Player):
     """This is User-Player class."""
 
@@ -55,6 +43,7 @@ class Human(Player):
         type_number = "Please, specify Y (choose number between 1 - 10): "
         invalid_input_info = "invalid input."
         for ship in self.ships:
+            Human.choose_ship_picture(ship)
             ship_coordinates = []
             for element in range(ship.hit_points):
                 coordinate = []
@@ -84,7 +73,29 @@ class Human(Player):
 
             # metoda Michała - walidacja
             all_ships_coordinates[ship.__name__] = ship_coordinates
-            print(all_ships_coordinates)
+            print(all_ships_coordinates)  # temporary
+
+    @staticmethod
+    def choose_ship_picture(ship_instance):
+        filenames = ["cruiser_PHOTO.md", "battleship_PHOTO.md",
+                     "carrier_PHOTO.md", "submarine_PHOTO.md", "destroyer_PHOTO.md"]
+        if ship_instance.__name__ == "Cruiser":
+            Human.print_ship_picture("cruiser_PHOTO.md")
+        elif ship_instance.__name__ == "Battleship":
+            Human.print_ship_picture("battleship_PHOTO.md")
+        elif ship_instance.__name__ == "Carrier":
+            Human.print_ship_picture("carrier_PHOTO.md")
+        elif ship_instance.__name__ == "Submarine":
+            Human.print_ship_picture("submarine_PHOTO.md")
+        elif ship_instance.__name__ == "Destroyer":
+            Human.print_ship_picture("destroyer_PHOTO.md")
+
+    @staticmethod
+    def print_ship_picture(filename):
+        with open(filename, "r", encoding="utf8") as myfile:
+            myfile = myfile.read().splitlines()
+            for line in myfile:
+                print(line)
 
 
 class AI(Player):
