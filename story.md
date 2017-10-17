@@ -1,6 +1,6 @@
 The story
 
-	In 2005, scientists discover in the Gliese system (some 23 light years from Earth) an
+In 2005, scientists discover in the Gliese system (some 23 light years from Earth) an
 
  extrasolar
 
@@ -30,11 +30,13 @@ In 2012, YOU are a hothead and disrespectful lieutenant and Tactical Action Offi
 
  coast of Hawaii.
 
+
 YOU are ordered to investigate. Upon arrival at the indicated location, they discover a massive
 
  dormant floating structure. YOU and two crew members, JERZY and JERZY'S BROTHER, are sent to
 
  approach the structure in an armed Zodiac.
+
 
 When YOU touche the structure, it knocks YOU away and generates a massive force field that
 
