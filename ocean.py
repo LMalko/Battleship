@@ -9,7 +9,7 @@ class Ocean():
         self.coordinants_dictionary = coordinants_dictionary
         self.fields = []
         self.__fill_list_with_Square_obj()
-        self.set_ships_on_board()
+        self.__set_ships_on_board()
 
 
     def __fill_list_with_Square_obj(self):
@@ -20,7 +20,7 @@ class Ocean():
             for single_element in range(board_side_length):
                 self.fields[empty_list].append(Square())
 
-    def set_ships_on_board(self):
+    def __set_ships_on_board(self):
 
         for ship in self.coordinants_dictionary.keys():     # dla klucza = nazwie klasy w str
             class_name = getattr(sys.modules[__name__], ship)()
