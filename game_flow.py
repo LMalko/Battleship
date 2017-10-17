@@ -18,6 +18,12 @@ class GameFlow():
         self.player_two = Player()
 
     def set_difficulty_lvl(self, difficulty_lvl):
+        while True:
+            if difficulty_lvl not in ["1", "2", "3"]:
+                print("Please choose from 1, 2, 3")
+                continue
+            else:
+                break
 
         self.difficulty_lvl = difficulty_lvl
 
