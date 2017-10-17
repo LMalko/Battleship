@@ -14,7 +14,11 @@ class Player(GameFlow):
     board = None  # Ocean object
 
     def perform_hit(self, opponent, coordinates):
-        pass  # czekam na Anię :)
+        """Execute attack to chosen quater in opponent board."""
+        x = coordinates[0]
+        y = coordinates[1]
+        opponent.board[x][y]
+
 
 class Human(Player):
     """This is User-Player class."""
@@ -46,30 +50,64 @@ class Human(Player):
             Human.choose_ship_picture(ship)
             ship_coordinates = []
             for element in range(ship.hit_points):
-                coordinate = []
-                row_index = ""
-                while not row_index or row_index not in correct_letters:
-                    row_index = input(type_letter).upper()
-
-                coordinate.append(correct_letters.index(row_index))
-
-                while True:
-                    try:
-                        column_index = int(input(type_number))
-                        if column_index in range(1, 11):
-                            coordinate.append(column_index - 1)
-                            break
-                        else:
-                            print(invalid_input_info)
-
-                    except:
-                        print(invalid_input_info)
+                coordinate = self._check_inputed_coordinates()
+                # row_index = ""
+                # while not row_index or row_index not in correct_letters:
+                #     row_index = input(type_letter).upper()
+                #
+                # coordinate.append(correct_letters.index(row_index))
+                #
+                # while True:
+                #     try:
+                #         column_index = int(input(type_number))
+                #         if column_index in range(1, 11):
+                #             coordinate.append(column_index - 1)
+                #             break
+                #         else:
+                #             print(invalid_input_info)
+                #
+                #     except:
+                #         print(invalid_input_info)
                 ship_coordinates.append(coordinate)
                 print(ship_coordinates)
 
             # metoda Michała - walidacja
             all_ships_coordinates[ship.__name__] = ship_coordinates
             print(all_ships_coordinates)  # temporary
+
+    def _check_inputed_coordinates(self):
+        """
+        Take coordinates from Player.
+
+        Check if input is correct.
+        Transform Player's coordinates to right indexing form.
+        Get inputed x, y coordinates (format: [A, 1], [A, 2]).
+        Tranform to format [0, 0] to use for correct indexing.
+
+        Returns list of coordinates, eg. [5, 1]
+        """
+        type_letter = "Please, specify X (choose letter between A - J): "
+        correct_letters = "ABCDEFGHIJ"
+        type_number = "Please, specify Y (choose number between 1 - 10): "
+        invalid_input_info = "invalid input."
+        coordinate = []
+        row_index = ""
+        while not row_index or row_index not in correct_letters:
+            row_index = input(type_letter).upper()
+        coordinate.append(correct_letters.index(row_index))
+        while True:
+            try:
+                column_index = int(input(type_number))
+                if column_index in range(1, 11):
+                    coordinate.append(column_index - 1)
+                    break
+                else:
+                    print(invalid_input_info)
+
+            except:
+                print(invalid_input_info)
+        return coordinate
+
 
     @staticmethod
     def choose_ship_picture(ship_instance):
@@ -98,12 +136,18 @@ class AI(Player):
     """This is AI-Player class."""
 
     name = "AI"
+    intelligence = 1
+
     def __init__(self):
         self.board = Ocean()
         # self.get_my_ships()
 
     def generate_ships_placement(self):
         """AI generate ships placement (coordinates)."""
-        pass
+        pass  # tutaj metoda Michała
 
-jarek = Human("Jarek")
+# jarek = Human("Jarek")
+
+
+if __name__ == "__main__":
+    main()
