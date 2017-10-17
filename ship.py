@@ -32,13 +32,3 @@ class Battleship(Ship):
 
 class Carrier(Ship):
     hit_points = 5
-
-
-ship1 = Carrier()
-ship2 = Carrier()
-
-# print(ship1.hit_points)
-print(ship1)
-ship1.decrement_hp()
-print(ship1)
-print(ship2)
