@@ -19,7 +19,6 @@ def main():
     os.system("clear")
 
     with open("story.md", "r", encoding="utf8") as myfile:
-        myfile = myfile.read().splitlines() 
         for line in myfile:
             delay_print(line)
         time.sleep(3)
