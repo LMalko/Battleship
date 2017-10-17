@@ -16,10 +16,16 @@ class Player(GameFlow):
     board = None  # Ocean object
 
     def perform_hit(self, opponent, coordinates):
-        """Execute attack to chosen quater in opponent board."""
-        x = coordinates[0]
-        y = coordinates[1]
-        opponent.board[x][y]
+        """
+        Execute attack to chosen quater in opponent board.
+
+        opponent: another Player object
+        coordinates: list [x, y] (x, y: integers)
+        """
+        # x = coordinates[0]
+        # y = coordinates[1]
+        # opponent.board[x][y]
+        return coordinates  # może to wystarczy?
 
     def choose_ships_placement(self):
         """
