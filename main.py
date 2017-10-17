@@ -25,8 +25,13 @@ def main():
         myfile = myfile.read().splitlines() 
         for line in myfile:
             print(line)
-
-    difficulty_level = input("Chosse difficulty: easy(1), medium(2), hard(3) -->")
+    while True:
+        difficulty_level = input("Chosse difficulty: easy(1), medium(2), hard(3) -->")
+        if difficulty_level not in ["1", "2", "3"]:
+            print("Please choose from 1, 2 or 3")
+            continue
+        else:
+            break
     this_game = GameFlow()
     this_game.set_difficulty_lvl(difficulty_level)
 
