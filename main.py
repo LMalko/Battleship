@@ -18,11 +18,11 @@ def main():
 
     os.system("clear")
 
-    with open("story.md", "r", encoding="utf8") as myfile:
-        for line in myfile:
-            delay_print(line)
-        time.sleep(3)
-        os.system("clear")
+    #with open("story.md", "r", encoding="utf8") as myfile:
+        #for line in myfile:
+            #delay_print(line)
+        #time.sleep(3)
+        #os.system("clear")
 
     with open("battleship.md", "r", encoding="utf8") as myfile:
         myfile = myfile.read().splitlines() 
