@@ -1,9 +1,4 @@
-# from main import *
-# from ocean import *
-# from player import *
 from ship import *
-# from game_flow import *
-
 
 class Square():
 
@@ -18,9 +13,9 @@ class Square():
 
         self.hit_count += 1
         if self.hit_count <= 1:
-            self.handle_hit()
+            self.__handle_hit()
 
-    def handle_hit(self):   # __handle_hit bo nie ma być wywoływana spoza klasy A.
+    def __handle_hit(self):
         
         if isinstance(self.associated_class, Ship):
             self.associated_class.decrement_hp()

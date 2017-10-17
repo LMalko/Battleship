@@ -1,5 +1,3 @@
-# from main import *
-# from player import *
 from ship import *
 from square import *
 import sys
@@ -15,12 +13,12 @@ class Ocean():
 
 
     def __fill_list_with_Square_obj(self):
+        board_side_length = 10
         
-        for empty_list in range(10):
+        for empty_list in range(board_side_length):
             self.fields.append([])
-            for single_element in range(10):
+            for single_element in range(board_side_length):
                 self.fields[empty_list].append(Square())
-                # self.set_ships_on_board()
 
     def set_ships_on_board(self):
 
@@ -31,8 +29,7 @@ class Ocean():
                     x_coord = list_of_coordinants[0]    # współrzędna x
                     y_coord = list_of_coordinants[1]
                     self.fields[x_coord].pop(y_coord)    # wyczyść pozycję z pustego Square()
-                    self.fields[x_coord].insert(y_coord, Square(class_name))
-                        # wstaw instancję Square zaimplementowaną konkretnym shipem 
+                    self.fields[x_coord].insert(y_coord, Square(class_name))    # wstaw instancję Square zaimplementowaną konkretnym shipem 
     def __str__(self):
 
         # ubot = Square(Submarine())        # kod do testów
