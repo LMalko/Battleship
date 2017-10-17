@@ -2,22 +2,29 @@ from main import *
 from ocean import *
 from ship import *
 from square import *
+from game_flow import GameFlow
 
 
 class Player(GameFlow):
-    
-    ships_plan: {}
-    board = None
+    "Abstract Player class."
+    ships = {}
+    board = None  # Ocean object
     name = "Noname"
 
-    def __init__(self, ship_instance):
-
-        self.name = ship_instance
-
-    def perform_hit(self, opponent_instance, coordinates):
-
-        self.board = coordinates
+    def perform_hit(self, opponent, coordinates):
+        pass
 
     def choose_ships_placement(self, this_players_plan):
-        
-        self.ships_plan = this_players_plan
+        pass
+
+
+class Human(Player):
+    """This is User-Player class."""
+
+    def __init__(self, name):
+        self.name = name
+
+
+class AI(Player):
+    """This is AI-Player class."""
+    name = "AI"
