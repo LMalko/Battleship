@@ -21,7 +21,7 @@ class Square():
 
     def handle_hit(self):
         
-        if isinstance("Ship"):
+        if isinstance(self.associated_class, Ship):
             self.associated_class.decrement_hp()
 
     def __str__(self):

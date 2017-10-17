@@ -7,7 +7,7 @@ from square import *
 
 def main():
     os.system("clear")
-    with open("battleship.md", "r", encoding="utf8") as myfile:
+    with open("carrier.md", "r", encoding="utf8") as myfile:
         myfile = myfile.read().splitlines() 
         for line in myfile:
             print(line)
