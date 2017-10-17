@@ -22,8 +22,13 @@ class Player(GameFlow):
         opponent.board[x][y]
 
     def choose_ships_placement(self):
-        """Choose ships placement (coordinates) by Player."""
-        self._set_coordinates()
+        """
+        Choose ships placement (coordinates) by Player.
+
+        Returns dict with ship coordinates, eg.
+        {"Destroyer": [[0, 0], [0, 1], "Submarine": ...}
+        """
+        return self._set_coordinates()
 
 
 class Human(Player):
@@ -31,8 +36,10 @@ class Human(Player):
 
     def __init__(self, name):
         self.name = name
-        # self.board = Ocean()  # create board
-        self.choose_ships_placement()
+        coordinates = self.choose_ships_placement()
+        print(coordinates)
+        print(type(coordinates))
+        self.board = Ocean(coordinates)  # create board
 
     def choose_attack_coordinates(self):
         """
@@ -51,6 +58,8 @@ class Human(Player):
         Transform Player's coordinates to right indexing form.
         Get inputed x, y coordinates (format: [A, 1], [A, 2]).
         Tranform to format [0, 0] to use for correct indexing.
+
+        Returns dict of ships placement coordinates.
         """
         all_ships_coordinates = {}
         type_letter = "Please, specify X (choose letter between A - J): "
@@ -63,11 +72,13 @@ class Human(Player):
             for element in range(ship.hit_points):
                 coordinate = self._input_and_check_coordinates()
                 ship_coordinates.append(coordinate)
-                print(ship_coordinates)
+                print(ship_coordinates)  # tmp
             # BĘDZIE ZUPEŁNIE INACZEJ
             # metoda Michała - walidacja
             all_ships_coordinates[ship.__name__] = ship_coordinates
             print(all_ships_coordinates)  # temporary
+
+        return all_ships_coordinates
 
     def _input_and_check_coordinates(self):
         """
@@ -133,20 +144,38 @@ class AI(Player):
     intelligence = 1  # determines effectiveness of bombard
 
     def __init__(self):
-        # self.board = Ocean()
-        self.choose_ships_placement()
+        coordinates = self.choose_ships_placement()
+        self.board = Ocean(coordinates)  # create board
 
     def _set_coordinates(self):
-        """AI generate ships placement (coordinates)."""
-        pass  # tutaj metoda Michała
+        """
+        AI generate ships placement (coordinates).
+
+        Returns dict of ships placement coordinates.
+        """
+        # tutaj metoda Michała
+        # tymczasowo:
+        test_dict = {
+                    'Battleship': [[2,3],[2,4],[2,5]],
+                    'Cruiser': [[4,3],[4,2],[4,1]],
+                    'Carrier': [[6,6],[7,6],[8,6]]}
+        return test_dict  # temporary
 
     def choose_attack_coordinates(self):
         """
         Choose attack (coordinates) by AI.
 
-        Returns coordinates in list [x, y]
+        Returns coordinates in list [x, y].
         """
+        # tymczasowo w prymitywnej formie (ok dla easy mode):
         if self.intelligence == 1:
             x = random.randint(0, 9)
             y = random.randint(0, 9)
         return [x, y]
+
+
+# jarek = Human("Jarek")
+# comp = AI()
+# print(jarek.choose_attack_coordinates())
+# print(comp.choose_attack_coordinates())
+# print(jarek.board)
