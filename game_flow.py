@@ -1,0 +1,2 @@
+class GameFlow():
+    pass
