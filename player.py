@@ -47,16 +47,12 @@ class Human(Player):
             ship_coordinates = []
             for element in range(ship.hit_points):
                 coordinate = []
-                while True:
-                    try:
-                        row_index = input(type_letter).upper()
-                        if row_index in correct_letters:
-                            coordinate.append(correct_letters.index(row_index))
-                            break
-                        else:
-                            print(invalid_input_info)
-                    except:
-                        print(invalid_input_info)
+                row_index = ""
+                while not row_index or row_index not in correct_letters:
+                    row_index = input(type_letter).upper()
+
+                coordinate.append(correct_letters.index(row_index))
+
                 while True:
                     try:
                         column_index = int(input(type_number))
@@ -109,3 +105,5 @@ class AI(Player):
     def generate_ships_placement(self):
         """AI generate ships placement (coordinates)."""
         pass
+
+jarek = Human("Jarek")
