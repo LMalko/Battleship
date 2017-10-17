@@ -11,6 +11,9 @@ def main():
         myfile = myfile.read().splitlines() 
         for line in myfile:
             print(line)
+    difficulty_level = input("Chosse difficulty: easy(1), medium(2), hard(3) --> ")
+    this_game = GameFlow()
+    this_game.set_difficulty_lvl(difficulty_level)
 
 
 if __name__ == "__main__":
