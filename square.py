@@ -13,7 +13,8 @@ class Square():
         pass
 
     def was_hit(self):
-        pass
+        self.hit_count = 1
+        handle_hit()
 
     def handle_hit(self):
-        pass
+        if 
