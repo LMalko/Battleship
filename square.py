@@ -26,7 +26,7 @@ class Square():
 
     def __str__(self):
 
-        if self.associated_class == None:
+        if not self.associated_class:
             print(".")
         elif self.hit_count > 0:
             print("X")
