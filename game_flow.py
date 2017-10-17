@@ -48,7 +48,7 @@ class GameFlow():
 
     def init_hall_of_fame(self, filename):
         with open(filename, "a", encoding="utf8") as myfile:
-            myfile.write(self.COŚTAM)               # wpisać co wysyłamy do pliku(self.name + self.turn_count ?)
+            myfile.write(self.DO_USTALENIA)               # wpisać co wysyłamy do pliku(self.name + self.turn_count ?)
 
     def show_hall_of_fame(self, filename):
         with open(filename, "r", encoding="utf8") as myfile:
