@@ -13,10 +13,10 @@ class GameFlow():
     def __init__(self):
 
         self.player_one = self.choose_play_mode()
-        self.player_two = Human()
+        self.player_two = Human(self.choose_players_name())
 
-    @staticmethod
-    def choose_play_mode():
+    # @staticmethod
+    def choose_play_mode(self):
         play_modes = ['Choose game mode:', ' 1. Singleplayer', ' 2. Multiplayer']
         while True:
             for line in play_modes:
@@ -25,10 +25,16 @@ class GameFlow():
             if mode == '1':
                 return AI()
             elif mode == '2':
-                return Human()
+                return Human(self.choose_players_name())
             else:
                 print('Input must be a number from given scope.\n')        
 
+    def choose_players_name(self):
+        name = ''
+        while len(name) == 0:
+            name = input("Choose players name: ").strip()
+
+        return name
 
     def set_difficulty_lvl(self, difficulty_lvl):
         while True:
@@ -50,6 +56,6 @@ class GameFlow():
                 print(line)
 
 
-# test_gameflow = GameFlow()
-# print('AAAAAAA')
-# test_gameflow.choose_play_mode()
+test_gameflow = GameFlow()
+print('AAAAAAA')
+# test_gameflow.choose_play_mode()    # niepotrzebne, bo powołując instancje wykonuje się init w którym to już jest

@@ -9,7 +9,7 @@ class Player():
     """Abstract Player class."""
     name = "Noname"
     # Player's availible ships:
-    ships = [Destroyer, Submarine, Cruiser, Battleship, Carrier]
+    ships = [Destroyer] #, Submarine, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board = None  # Ocean object
 
@@ -180,7 +180,7 @@ class AI(Player):
 
 # jarek = Human("Jarek")
 # print(jarek.board)
-comp = AI()
-print(comp.board)
+# comp = AI()
+# print(comp.board)
 # print(jarek.choose_attack_coordinates())
-print(comp.choose_attack_coordinates())
+# print(comp.choose_attack_coordinates())
