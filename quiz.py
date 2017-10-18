@@ -3,6 +3,7 @@ import os
 
 
 def summary(correct_answers_count):
+    '''Print correct/ all answers ratio.'''
 
     os.system("clear")
     print("\n\n\nYour result is: " + str(correct_answers_count) + " out of 7")
@@ -20,7 +21,11 @@ def quiz_flow(questions, answers):
         for i in answers[answers_set_number]:
             print(i)
         while True:
-            user_answer = int(input("Your choice is (choose 1, 2, 3 or 4): "))
+            try:
+                user_answer = int(input("Your choice is (choose 1, 2, 3 or 4): "))
+            except ValueError:
+                print("Please put number")
+                continue
             if user_answer not in [1, 2, 3, 4]:
                 print("No such answer, try again")
                 continue
