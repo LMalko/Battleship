@@ -1,12 +1,12 @@
 from random import randint, choice
 
 # this board generation function is intended for testing purposes only
-def __generate_board(width = 10, height = 10):
+def __generate_board(width = 10, height = 10, fill_char = " "):
     board = []
     for y in range(height):
         row = []
         for x in range(width):
-            row.append(" ")
+            row.append(fill_char)
         board.append(row)
 
     return board
@@ -44,7 +44,7 @@ def is_ship_at_or_beside_another(used_area_points, ship_points_to_be_tested):
 
     return False
 
-# internal function, not to be used outside of this module...
+# internal function, not to be used outside of this module in general...
 def __evaluate_start_end_coords_into_point_list(coords_pair):
     ship_points = []
     ship_coords_begin = coords_pair[0]
@@ -55,7 +55,7 @@ def __evaluate_start_end_coords_into_point_list(coords_pair):
             # if begin y is greater than end y, swap begin with end
             ship_coords_begin, ship_coords_end = ship_coords_end, ship_coords_begin
 
-        for i in range(ship_coords_end[1] - ship_coords_begin[1]):
+        for i in range(ship_coords_end[1] - ship_coords_begin[1] + 1):
             ship_points.append([ship_coords_begin[0], ship_coords_begin[1] + i])
     else:
         # y is constant, iterate over x's
@@ -63,16 +63,20 @@ def __evaluate_start_end_coords_into_point_list(coords_pair):
             # if begin x is greater than end x, swap begin with end
             ship_coords_begin, ship_coords_end = ship_coords_end, ship_coords_begin
 
-        for i in range(ship_coords_end[0] - ship_coords_begin[0]):
+        for i in range(ship_coords_end[0] - ship_coords_begin[0] + 1):
             ship_points.append([ship_coords_begin[0] + i, ship_coords_begin[1]])
 
     return ship_points
 
 
+def __get_ship_types():
+    return {"Carrier":5, "Battleship":4, "Cruiser":3, "Submarine":3, "Destroyer":2}
+
+
 def generate_ship_coords(board, internal_testing = False):
     ships = {}
     ship_count = 0
-    ship_type_dict = {"Carrier":5, "Battleship":4, "Cruiser":3, "Submarine":3, "Destroyer":2}
+    ship_type_dict = __get_ship_types()
     amount_distinct_types = len(ship_type_dict)
     used_area_points = [] # a collection of points occupied by already generated ships
     while ship_count < amount_distinct_types:
@@ -86,9 +90,9 @@ def generate_ship_coords(board, internal_testing = False):
         ship_coords_end = ship_coords_begin[:]
         coord_random_index = randint(0,len(ship_coords_end) - 1)
         if(randint(0,1) == 0): # assume addition
-            ship_coords_end[coord_random_index] += ship_length
+            ship_coords_end[coord_random_index] += ship_length - 1
         else: # assume subtraction
-            ship_coords_end[coord_random_index] -= ship_length
+            ship_coords_end[coord_random_index] -= ship_length - 1
 
         ship_start_end_coord_pair = [ship_coords_begin, ship_coords_end]
         if does_ship_fit_within_board_boundaries(board, ship_start_end_coord_pair):
@@ -97,6 +101,7 @@ def generate_ship_coords(board, internal_testing = False):
 
             # test the collection against used area
             if not is_ship_at_or_beside_another(used_area_points, ship_points):
+                print(ship_start_end_coord_pair)
                 ships[ship_key] = ship_points[:] # places a copy in dict
                 ship_count += 1
                 # add points of the newly generated ship to the used area
