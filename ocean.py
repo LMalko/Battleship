@@ -42,7 +42,15 @@ class Ocean():
         # print('obj', self.fields[2][3].associated_class)
 
         alfabet = "ABCDEFGHIJ"
-        title_bar = ' |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  | 10 '
+        # title_bar = ' |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  | 10 '
+
+        title_bar = ' '
+        for element in range(len(self.fields[0])):  # magic
+            if element + 1 < 10:  # magic
+                title_bar += '|  {}  '.format(element+1)  # magic
+            else:
+                title_bar += '|  {} '.format(element+1)    # magic          
+
         separator = '-'*len(title_bar) + '\n'
         
         super_str = ''

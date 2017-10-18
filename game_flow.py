@@ -3,6 +3,7 @@ from ocean import *
 from player import *
 from ship import *
 from square import *
+import os
 
 
 class GameFlow():
@@ -41,7 +42,6 @@ class GameFlow():
         total_hit_points = 0
         for ship in player.board.my_navy:
             total_hit_points += ship.hit_points
-        print(total_hit_points)     # pokazuje totala między bordami, do usunięcia
         if total_hit_points == 0:
             return True
         return False
@@ -64,6 +64,7 @@ class GameFlow():
         name = ''
         while len(name) == 0:
             name = input("Choose players name: ").strip()
+        os.system('clear')
 
         return name
 

@@ -1,4 +1,5 @@
 from ship import *
+import os
 
 class Square():
 
@@ -13,23 +14,23 @@ class Square():
 
         self.hit_count += 1
         if self.hit_count <= 1:
-            self.__handle_hit()
+            return self.__handle_hit()     #tu return self.__handle() czyli message
 
-    def __handle_hit(self):
+    def __handle_hit(self):  #zamiast printów sychy str i wtedy nie ma problemu z niemożnością importu board_len z Playera
         
         if isinstance(self.associated_class, Ship):
             self.associated_class.decrement_hp()
             if self.associated_class.hit_points == 0:
-                print("hit! {} was sunk".format(self.associated_class.__class__.__name__).center(10))
+                return "hit! {} was sunk".format(self.associated_class.__class__.__name__)
             else:
-                print("hit!".center(10))
+                return "hit!"
+            
+        elif self.hit_count == 0:
+            return "miss!"
         else:
-            message = "miss!"
-            str_len = 10 + len(message)
-            print(message.center(str_len))
+            return "You've already been here before. Nothing special happened"     # to sie nie zwraca :(
 
     def __str__(self):
-
         if not self.associated_class:
             if self.hit_count == 0:
                 return " "

@@ -25,8 +25,9 @@ def main():
         myfile = myfile.read().splitlines() 
         for line in myfile:
             print(line)
-
+    input("RESS ANY KEY TO CONTINUE")  # dorobić center do długości asci arta (tak żeby było pod... albo dobra - dopisać w asci arcie to zdanie i wywołaś input pusty :P)
     this_game = GameFlow()
+    # print("---------->", Player.board)
     winner = this_game.fight()
     print("The winner is: ", winner.name)
     print("Zostałeś żeglarzem roku!")

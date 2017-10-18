@@ -4,6 +4,8 @@ from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
 from square import Square
 from abrain import ABrain  # new AI abstract class
+import os
+import time
 
 
 class Player():
@@ -12,7 +14,7 @@ class Player():
     # Player's availible ships:
     ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
-    board = None  # Ocean object
+    board_row_len = None  # Ocean object
 
     def perform_hit(self, opponent):
         """
@@ -21,13 +23,24 @@ class Player():
         opponent: another Player object
         coordinates: list [x, y] (x, y: integers)
         """
+        #if isinstance(self, Human):
+        print(opponent.board)
         if isinstance(self, Human):
-            print(opponent.board)
             print(self)
-            coords = self.choose_attack_coordinates(opponent)
-            x_coord = coords[0]
-            y_coord = coords[1]
-            opponent.board.fields[x_coord][y_coord].was_hit()
+        if isinstance(self, AI):
+            input("Press any key to make your move.")
+        coords = self.choose_attack_coordinates(opponent)
+        x_coord = coords[0]
+        y_coord = coords[1]
+        os.system('clear')
+        # opponent.board.fields[x_coord][y_coord].was_hit()   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
+        ship_message = opponent.board.fields[x_coord][y_coord].was_hit()   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
+        # if isinstance(self, Human):
+        separator = '-'*self.board_row_len
+        print(separator)
+        print(" | Game info: {} {}!".format(self.__class__.__name__, ship_message))
+        print(separator)
+        
 
     def choose_ships_placement(self):
         """
@@ -55,6 +68,8 @@ class Human(Player):
         self.fields = []
         self.fill_list_with_Square_obj()
         self.board = Ocean(self.my_ships, self.fields)  # create board
+        board_bar_len = self.board.__str__().split('\n')
+        Player.board_row_len = len(board_bar_len[0]) # ustawia długość belki do printów
 
     def choose_attack_coordinates(self, opponent):
         """
@@ -153,14 +168,13 @@ class Human(Player):
                 print(line)
 
     def __str__(self):
-        board = self.board.__str__()
-        board_lines = board.split('\n')
-        separator = board_lines[1] + '\n'
-        
+        separator = '-'*Player.board_row_len + '\n'
         navy_str = separator
-        navy_str += ' | ' + self.name + ' navy:\n' + separator
+        tab_title = '   ' + self.name + ' navy:\n'
+
+        navy_str +=  tab_title + '-'*len(tab_title) + '\n'
         for ship in self.board.my_navy:
-            navy_str += " | {}\n".format(ship)
+            navy_str += " - {}\n".format(ship)
 
         return navy_str + separator
 
@@ -205,7 +219,7 @@ class AI(Player, ABrain):
         separator = board_lines[1] + '\n'
         
         navy_str = separator
-        navy_str += ' | ' + self.name + ' navy:\n' + separator
+        navy_str += '   ' + self.name + ' navy:\n' + separator
         for ship in self.board.my_navy:
             navy_str += " | {}\n".format(ship)
 
