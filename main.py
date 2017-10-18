@@ -29,6 +29,7 @@ def main():
     this_game = GameFlow()
     winner = this_game.fight()
     print("The winner is: ", winner.name)
+    print("Zostałeś żeglarzem roku!")
 
 
 if __name__ == "__main__":

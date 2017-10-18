@@ -19,11 +19,22 @@ class Square():
         
         if isinstance(self.associated_class, Ship):
             self.associated_class.decrement_hp()
+            if self.associated_class.hit_points == 0:
+                print("hit! {} was sunk".format(self.associated_class.__class__.__name__).center(10))
+            else:
+                print("hit!".center(10))
+        else:
+            message = "miss!"
+            str_len = 10 + len(message)
+            print(message.center(str_len))
 
     def __str__(self):
 
         if not self.associated_class:
-            return "."
+            if self.hit_count == 0:
+                return " "
+            else:
+                return '.'
         elif self.hit_count > 0:
             return "X"
         else:

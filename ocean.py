@@ -22,6 +22,8 @@ class Ocean():
                     y_coord = list_of_coordinants[1]
                     self.fields[x_coord].pop(y_coord)    # wyczyść pozycję z pustego Square()
                     self.fields[x_coord].insert(y_coord, Square(ship_object))    # wstaw instancję Square zaimplementowaną konkretnym shipem 
+       
+    
     def __str__(self):
 
         # ubot = Square(Submarine())        # kod do testów
@@ -39,11 +41,19 @@ class Ocean():
         # print('hit count', self.fields[2][3].hit_count)
         # print('obj', self.fields[2][3].associated_class)
 
+        alfabet = "ABCDEFGHIJ"
+        title_bar = ' |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  | 10 '
+        separator = '-'*len(title_bar) + '\n'
+        
         super_str = ''
+        super_str += title_bar + '\n' + separator
+
         for lists in range(len(self.fields)):
+            super_str += alfabet[lists]
             for element in range(len(self.fields[lists])):
-                super_str += " {}".format(self.fields[lists][element].__str__())
+                super_str += "|  {}  ".format(self.fields[lists][element].__str__())
             super_str += '\n'
+            super_str += separator
 
         return(super_str)
 

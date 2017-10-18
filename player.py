@@ -3,7 +3,6 @@ import random
 from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
 from square import Square
-# import ship_generator
 from abrain import ABrain  # new AI abstract class
 
 
@@ -11,7 +10,7 @@ class Player():
     """Abstract Player class."""
     name = "Noname" #po cooooooo to tu?
     # Player's availible ships:
-    ships = [Destroyer]  # , Submarine, Cruiser, Battleship, Carrier]
+    ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board = None  # Ocean object
 
@@ -23,8 +22,8 @@ class Player():
         coordinates: list [x, y] (x, y: integers)
         """
         if isinstance(self, Human):
-            print(opponent.name.center(len(opponent.board.fields)))
             print(opponent.board)
+            print(self)
             coords = self.choose_attack_coordinates(opponent)
             x_coord = coords[0]
             y_coord = coords[1]
@@ -88,11 +87,12 @@ class Human(Player):
             for element in range(ship.hit_points):
                 coordinate = self._input_and_check_coordinates()
                 ship_coordinates.append(coordinate)
-                print(ship_coordinates)  # tmp
+                print('\n')
+                # print(ship_coordinates)  # tmp
             # BĘDZIE ZUPEŁNIE INACZEJ
             # metoda Michała - walidacja
             all_ships_coordinates[ship.__name__] = ship_coordinates
-            print(all_ships_coordinates)  # temporary
+            # print(all_ships_coordinates)  # temporary
 
         return all_ships_coordinates
 
@@ -152,6 +152,17 @@ class Human(Player):
             for line in myfile:
                 print(line)
 
+    def __str__(self):
+        board = self.board.__str__()
+        board_lines = board.split('\n')
+        separator = board_lines[1] + '\n'
+        
+        navy_str = separator
+        navy_str += ' | ' + self.name + ' navy:\n' + separator
+        for ship in self.board.my_navy:
+            navy_str += " | {}\n".format(ship)
+
+        return navy_str + separator
 
 class AI(Player, ABrain):
     """This is AI-Player class."""
@@ -188,6 +199,17 @@ class AI(Player, ABrain):
         """
         return self.search_and_try_destroy(opponent)
 
+    def __str__(self):
+        board = self.board.__str__()
+        board_lines = board.split('\n')
+        separator = board_lines[1] + '\n'
+        
+        navy_str = separator
+        navy_str += ' | ' + self.name + ' navy:\n' + separator
+        for ship in self.board.my_navy:
+            navy_str += " | {}\n".format(ship)
+
+        return navy_str + separator
 #
 comp = AI()
 # jarek = Human("Jarek")
