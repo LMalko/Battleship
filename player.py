@@ -3,27 +3,29 @@ import random
 from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
 from square import Square
+# import ship_generator
+from abrain import ABrain  # new AI abstract class
 
 
 class Player():
     """Abstract Player class."""
     name = "Noname"
     # Player's availible ships:
-    ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
+    ships = [Destroyer]  # , Submarine, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board = None  # Ocean object
 
-    def perform_hit(self, opponent, coordinates):
+    def perform_hit(self, opponent):
         """
         Execute attack to chosen quater in opponent board.
 
         opponent: another Player object
         coordinates: list [x, y] (x, y: integers)
         """
-        # x = coordinates[0]
-        # y = coordinates[1]
-        # opponent.board[x][y]
-        return coordinates  # może to wystarczy?
+        coords = self.choose_attack_coordinates(opponent)
+        x_coord = coords[0]
+        y_coord = coords[1]
+        opponent.board.fields[x_coord][y_coord].was_hit()
 
     def choose_ships_placement(self):
         """
@@ -36,25 +38,24 @@ class Player():
 
     def fill_list_with_Square_obj(self):
         board_side_length = 10
-        
+
         for empty_list in range(board_side_length):
             self.fields.append([])
             for single_element in range(board_side_length):
                 self.fields[empty_list].append(Square())
-
 
 class Human(Player):
     """This is User-Player class."""
 
     def __init__(self, name):
         self.name = name
+        self.name = name
         self.choose_ships_placement()
         self.fields = []
         self.fill_list_with_Square_obj()
         self.board = Ocean(self.my_ships, self.fields)  # create board
 
-
-    def choose_attack_coordinates(self):
+    def choose_attack_coordinates(self, opponent):
         """
         Choose attack (coordinates) by Player.
 
@@ -150,17 +151,16 @@ class Human(Player):
                 print(line)
 
 
-class AI(Player):
+class AI(Player, ABrain):
     """This is AI-Player class."""
 
     name = "AI"
-    intelligence = 1  # determines effectiveness of bombard
 
     def __init__(self):
         self.choose_ships_placement()
         self.fields = []
         self.fill_list_with_Square_obj()
-        self.board = Ocean(self.my_ships, self.fields)
+        self.board = Ocean(self.my_ships, self.fields)  # create board
 
     def _set_coordinates(self):
         """
@@ -169,30 +169,27 @@ class AI(Player):
         Returns dict of ships placement coordinates.
         """
         # tutaj metoda Michała
-        # tymczasowo:
+        # # tymczasowo:
         test_dict = {
                     'Battleship': [[2, 3], [2, 4], [2, 5], [2, 6]],
                     'Cruiser': [[4,3],[4,2],[4,1]],
                     'Carrier': [[6,6],[7,6],[8,6]]
                     }
         return test_dict  # temporary
+        # return ship_generator.generate_ship_coords(self.board)
 
-    def choose_attack_coordinates(self):
+    def choose_attack_coordinates(self, opponent):
         """
         Choose attack (coordinates) by AI.
 
         Returns coordinates in list [x, y].
         """
-        # tymczasowo w prymitywnej formie (ok dla easy mode):
-        if self.intelligence == 1:
-            x = random.randint(0, 9)
-            y = random.randint(0, 9)
-        return [x, y]
+        return self.search_and_try_destroy(opponent)
 
-
-# jarek = Human("Jarek")
-# print(jarek.board)
+#
 # comp = AI()
+# jarek = Human("Jarek")
 # print(comp.board)
-# print(jarek.choose_attack_coordinates())
-# print(comp.choose_attack_coordinates())
+# print(jarek.board)
+# comp.perform_hit(opponent=jarek)
+# jarek.perform_hit(opponent=comp)
