@@ -34,6 +34,13 @@ class Player():
         """
         self.my_ships = self._set_coordinates()
         # pass
+    def fill_list_with_Square_obj(self):
+        board_side_length = 10
+        
+        for empty_list in range(board_side_length):
+            self.fields.append([])
+            for single_element in range(board_side_length):
+                self.fields[empty_list].append(Square())
 
 
 class Human(Player):
@@ -42,7 +49,10 @@ class Human(Player):
     def __init__(self, name):
         self.name = name
         self.choose_ships_placement()
-        self.board = Ocean(self.my_ships)  # create board
+        self.fields = []
+        self.fill_list_with_Square_obj()
+        self.board = Ocean(self.my_ships, self.fields)  # create board
+
 
     def choose_attack_coordinates(self):
         """
@@ -148,7 +158,9 @@ class AI(Player):
 
     def __init__(self):
         self.choose_ships_placement()
-        self.board = Ocean(self.my_ships)  # create board
+        self.fields = []
+        self.fill_list_with_Square_obj()
+        self.board = Ocean(self.my_ships, self.fields)
 
     def _set_coordinates(self):
         """

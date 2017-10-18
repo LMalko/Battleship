@@ -21,7 +21,7 @@ class GameFlow():
         # zaczyna wybrany czy losowy gracz?
         while True:
             self.turn_count += 1
-            self.player_one.perform_hit(self.player_two): # brak drugiego arg - coordinants powinien pobierać już w perform_hit()
+            self.player_one.perform_hit(self.player_two) # brak drugiego arg - coordinants powinien pobierać już w perform_hit()
             if self.check_if_lose(self.player_two):
                 return self.player_one
             self.player_two.perform_hit(self.player_one)    # -||-
@@ -39,6 +39,7 @@ class GameFlow():
         #  if total_hit_points == 0:
         #       return True
         #  return False
+        pass
         
 
     def choose_play_mode(self):
@@ -83,4 +84,6 @@ class GameFlow():
 
 test_gameflow = GameFlow()
 print('AAAAAAA')
+for ship in test_gameflow.player_two.board.my_navy:
+    print(ship)
 # test_gameflow.choose_play_mode()    # niepotrzebne, bo powołując instancje wykonuje się init w którym to już jest
