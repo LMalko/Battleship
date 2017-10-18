@@ -27,6 +27,8 @@ def main():
             print(line)
 
     this_game = GameFlow()
+    winner = this_game.fight()
+    print("The winner is: ", winner.name)
 
 
 if __name__ == "__main__":

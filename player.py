@@ -9,7 +9,7 @@ from abrain import ABrain  # new AI abstract class
 
 class Player():
     """Abstract Player class."""
-    name = "Noname"
+    name = "Noname" #po cooooooo to tu?
     # Player's availible ships:
     ships = [Destroyer]  # , Submarine, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
@@ -22,10 +22,13 @@ class Player():
         opponent: another Player object
         coordinates: list [x, y] (x, y: integers)
         """
-        coords = self.choose_attack_coordinates(opponent)
-        x_coord = coords[0]
-        y_coord = coords[1]
-        opponent.board.fields[x_coord][y_coord].was_hit()
+        if isinstance(self, Human):
+            print(opponent.name.center(len(opponent.board.fields)))
+            print(opponent.board)
+            coords = self.choose_attack_coordinates(opponent)
+            x_coord = coords[0]
+            y_coord = coords[1]
+            opponent.board.fields[x_coord][y_coord].was_hit()
 
     def choose_ships_placement(self):
         """
@@ -49,7 +52,6 @@ class Human(Player):
 
     def __init__(self, name):
         self.name = name
-        self.name = name
         self.choose_ships_placement()
         self.fields = []
         self.fill_list_with_Square_obj()
@@ -61,7 +63,7 @@ class Human(Player):
 
         Returns coordinates in list [x, y]
         """
-        print("It's bombard time, please specify attack coordinates:\n")
+        print(self.name + ", it's bombard time! Please specify attack coordinates:\n")
         return self._input_and_check_coordinates()
 
     def _set_coordinates(self):
@@ -171,10 +173,10 @@ class AI(Player, ABrain):
         # tutaj metoda Michała
         # # tymczasowo:
         test_dict = {
-                    'Battleship': [[2, 3], [2, 4], [2, 5], [2, 6]],
-                    'Cruiser': [[4,3],[4,2],[4,1]],
-                    'Carrier': [[6,6],[7,6],[8,6]]
-                    }
+                    'Battleship': [[2, 3], [2, 4], [2, 5], [2, 6]]} #,
+                    # 'Cruiser': [[4,3],[4,2],[4,1]],
+                    # 'Carrier': [[6,6],[7,6],[8,6]]
+                    # }
         return test_dict  # temporary
         # return ship_generator.generate_ship_coords(self.board)
 
@@ -187,9 +189,10 @@ class AI(Player, ABrain):
         return self.search_and_try_destroy(opponent)
 
 #
-# comp = AI()
+comp = AI()
 # jarek = Human("Jarek")
 # print(comp.board)
 # print(jarek.board)
 # comp.perform_hit(opponent=jarek)
 # jarek.perform_hit(opponent=comp)
+# print(isinstance(comp, Human))

@@ -9,6 +9,7 @@ class GameFlow():
 
     turn_count = 0
     difficulty_lvl = 0
+    play_mode = ''
 
     def __init__(self):
 
@@ -21,11 +22,13 @@ class GameFlow():
         # zaczyna wybrany czy losowy gracz?
         while True:
             self.turn_count += 1
-            self.player_one.perform_hit(self.player_two) # brak drugiego arg - coordinants powinien pobierać już w perform_hit()
+            self.player_one.perform_hit(self.player_two)     # brak drugiego arg - coordinants powinien pobierać już w perform_hit()
             if self.check_if_lose(self.player_two):
+                print(self.player_two.board)
                 return self.player_one
             self.player_two.perform_hit(self.player_one)    # -||-
             if self.check_if_lose(self.player_one):
+                print(self.player_one.board)
                 return self.player_two
 
     def check_if_lose(self, player):
@@ -33,7 +36,7 @@ class GameFlow():
         total_hit_points = 0
         for ship in player.board.my_navy:
             total_hit_points += ship.hit_points
-        print(total_hit_points)
+        print(total_hit_points)     # pokazuje totala między bordami, do usunięcia
         if total_hit_points == 0:
             return True
         return False
@@ -44,8 +47,10 @@ class GameFlow():
             self.print_list(play_modes)
             mode = input(" Pass mode number: ")
             if mode == '1':
+                self.play_mode = 1
                 return AI()
             elif mode == '2':
+                self.play_mode = 2
                 return Human(self.choose_players_name())
             else:
                 print('Input must be a number from given scope.\n')        
@@ -62,7 +67,7 @@ class GameFlow():
         for element in list:
             print(element)
 
-    def set_difficulty_lvl(self):
+    def set_difficulty_lvl(self):   # podpiąć jak już sie zdecydujemy, czym się różnią poziomy
         levels = ['1. Easy', '2. Medium', '3. Hard']
         self.print_list(levels)
 
@@ -85,19 +90,19 @@ class GameFlow():
                 print(line)
 
 
-test_gameflow = GameFlow()
-print('AAAAAAA')
+# test_gameflow = GameFlow()
+# print('AAAAAAA')
 
-total_hp_ships = 0
-for ship in test_gameflow.player_two.board.my_navy:
-    print(ship)
-    total_hp_ships += ship.hit_points
+# total_hp_ships = 0
+# for ship in test_gameflow.player_two.board.my_navy:
+#     print(ship)
+#     total_hp_ships += ship.hit_points
 
-print(test_gameflow.player_two.board)   # wypisuje planszę playera z ustawionymi statkami
-# test_gameflow.choose_play_mode()    # niepotrzebne, bo powołując instancje wykonuje się init w którym to już jest
-print('hit_points:', total_hp_ships)
-test_gameflow.player_two.board.my_navy[0].decrement_hp()
-test_gameflow.player_two.board.my_navy[0].decrement_hp()
+# print(test_gameflow.player_two.board)   # wypisuje planszę playera z ustawionymi statkami
+# # test_gameflow.choose_play_mode()    # niepotrzebne, bo powołując instancje wykonuje się init w którym to już jest
+# print('hit_points:', total_hp_ships)
+# test_gameflow.player_two.board.my_navy[0].decrement_hp()
+# test_gameflow.player_two.board.my_navy[0].decrement_hp()
 
-test_gameflow.check_if_lose(test_gameflow.player_two)
+# test_gameflow.check_if_lose(test_gameflow.player_two)
 
