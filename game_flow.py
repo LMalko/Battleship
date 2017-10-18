@@ -41,8 +41,7 @@ class GameFlow():
     def choose_play_mode(self):
         play_modes = ['Choose game mode:', ' 1. Singleplayer', ' 2. Multiplayer']
         while True:
-            for line in play_modes:
-                print(line)
+            self.print_list(play_modes)
             mode = input(" Pass mode number: ")
             if mode == '1':
                 return AI()
@@ -58,13 +57,21 @@ class GameFlow():
 
         return name
 
-    def set_difficulty_lvl(self, difficulty_lvl):
+    @staticmethod
+    def print_list(list):
+        for element in list:
+            print(element)
+
+    def set_difficulty_lvl(self):
+        levels = ['1. Easy', '2. Medium', '3. Hard']
+        self.print_list(levels)
+
         while True:
-            if difficulty_lvl not in ["1", "2", "3"]:
-                print("Please choose from 1, 2, 3")
-                continue
-            else:
+            difficulty_lvl = input("Choose number of difficulty level: ").strip()
+            if difficulty_lvl in ["1", "2", "3"]:
                 break
+            else:
+                print("Input must be a number from given scope.\n")
 
         self.difficulty_lvl = difficulty_lvl
 
