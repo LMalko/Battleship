@@ -9,7 +9,7 @@ class Player():
     """Abstract Player class."""
     name = "Noname"
     # Player's availible ships:
-    ships = [Destroyer] #, Submarine, Cruiser, Battleship, Carrier]
+    ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board = None  # Ocean object
 
@@ -33,7 +33,7 @@ class Player():
         {"Destroyer": [[0, 0], [0, 1], "Submarine": ...}
         """
         self.my_ships = self._set_coordinates()
-        # pass
+
     def fill_list_with_Square_obj(self):
         board_side_length = 10
         

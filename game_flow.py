@@ -28,19 +28,15 @@ class GameFlow():
             if self.check_if_lose(self.player_one):
                 return self.player_two
 
+    def check_if_lose(self, player):
 
-    def check_if_lose(self, player):    #obj klasy Player (któryś z graczy)
-        # spr sumę punktów życia posiadanych statków. Jeśli == 0 to przegrał
-        # w Ocean można zrobić dodatkową liste przechowującą referencję do każdego statku umieszczonego na boardzie
-        # w ten sposób łatwiej będzie tu sumować W PĘTLI ich punkty życia:
-        #  total_hit_points = 0
-        #  for ship in player.board.MOJA_FLOTA:
-        #      total_hit_points += ship.hit_points
-        #  if total_hit_points == 0:
-        #       return True
-        #  return False
-        pass
-        
+        total_hit_points = 0
+        for ship in player.board.my_navy:
+            total_hit_points += ship.hit_points
+        print(total_hit_points)
+        if total_hit_points == 0:
+            return True
+        return False
 
     def choose_play_mode(self):
         play_modes = ['Choose game mode:', ' 1. Singleplayer', ' 2. Multiplayer']
@@ -72,7 +68,7 @@ class GameFlow():
 
         self.difficulty_lvl = difficulty_lvl
 
-    def init_hall_of_fame(self, filename):
+    def init_hall_of_fame(self, filename):  # dostanie z maina obiekt klasy player(zwycięzcę)
         with open(filename, "a", encoding="utf8") as myfile:
             myfile.write(self.DO_USTALENIA)               # wpisać co wysyłamy do pliku(self.name + self.turn_count ?)
 
@@ -84,6 +80,17 @@ class GameFlow():
 
 test_gameflow = GameFlow()
 print('AAAAAAA')
+
+total_hp_ships = 0
 for ship in test_gameflow.player_two.board.my_navy:
     print(ship)
+    total_hp_ships += ship.hit_points
+
+print(test_gameflow.player_two.board)   # wypisuje planszę playera z ustawionymi statkami
 # test_gameflow.choose_play_mode()    # niepotrzebne, bo powołując instancje wykonuje się init w którym to już jest
+print('hit_points:', total_hp_ships)
+test_gameflow.player_two.board.my_navy[0].decrement_hp()
+test_gameflow.player_two.board.my_navy[0].decrement_hp()
+
+test_gameflow.check_if_lose(test_gameflow.player_two)
+
