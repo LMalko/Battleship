@@ -12,13 +12,9 @@ import ship_generator
 
 
 class Player():
-    """Abstract Player class."""
-    # name = "Noname" #po cooooooo to tu?
-    # Player's availible ships:
-    # ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
-    board_row_len = 0  # Ocean object
-    game_message = [' ', ' ', ' ', ' ', ' ']
+    board_row_len = 0  # length of title bar of players ocean-board
+    game_message = [' ', ' ', ' ', ' ', ' ']  # empty message box, will be filled druing game
 
     def perform_hit(self, opponent):
         """
@@ -28,24 +24,22 @@ class Player():
         coordinates: list [x, y] (x, y: integers)
         """
         os.system('clear')
-
-        self.display_message(opponent)
-
+        self.display_game_message(opponent)
         if isinstance(self, Human):
             print(opponent.board)
-            # print(self)
-        # if isinstance(self, AI):
-        #     input("PRESS ANY KEY TO CONTINUE".center(self.board_row_len))
-        coords = self.choose_attack_coordinates(opponent)
-        x_coord = coords[0]
-        y_coord = coords[1]
 
-        del self.game_message[0]
-        self.game_message.append(self.name + ' ' + opponent.board.ocean_fields[x_coord][y_coord].was_hit())   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
-        # if isinstance(self, Human):
+        coordinants = self.choose_attack_coordinates(opponent)
+        x_coord_index = 0
+        y_coord_index = 1
+        x_coord = coordinants[x_coord_index]
+        y_coord = coordinants[y_coord_index]
+
+        del self.game_message[0]    # delate the oldest message in message box
+        self.game_message.append(self.name + ' ' + opponent.board.ocean_fields[x_coord][y_coord].was_hit())
+        # add new message to the message box
 
 
-    def display_message(self, opponent):
+    def display_game_message(self, opponent):
         separator = '-'*self.board_row_len
 
         players_navy = self.__str__().split('\n')
