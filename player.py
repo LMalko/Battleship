@@ -83,9 +83,9 @@ class Player():
         board_side_length = 10
 
         for empty_list in range(board_side_length):
-            self.fields.append([])
+            self.ocean_fields.append([])
             for single_element in range(board_side_length):
-                self.fields[empty_list].append(Square())
+                self.ocean_fields[empty_list].append(Square())
 
 class Human(Player):
     """This is User-Player class."""
@@ -93,9 +93,9 @@ class Human(Player):
     def __init__(self, name):
         self.name = name
         self.get_ships_placement()
-        self.fields = []
+        self.ocean_fields = []
         self.fill_list_with_Square_obj()
-        self.board = Ocean(self.my_ships, self.fields)  # create board
+        self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
         board_bar_len = self.board.__str__().split('\n')
         Player.board_row_len = len(board_bar_len[0]) # ustawia długość belki do printów
 
@@ -196,10 +196,10 @@ class AI(Player, ABrain):
     name = "AI"
 
     def __init__(self, iq):
-        self.fields = []
+        self.ocean_fields = []
         self.fill_list_with_Square_obj()
         self.get_ships_placement()
-        self.board = Ocean(self.my_ships, self.fields)  # create board
+        self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
         self.intelligence = iq
 
     def _initialize_ship_coordinates(self):
@@ -208,7 +208,7 @@ class AI(Player, ABrain):
 
         Returns dict of ships placement coordinates.
         """
-        return ship_generator.generate_ship_coords(self.fields)
+        return ship_generator.generate_ship_coords(self.ocean_fields)
 
     def choose_attack_coordinates(self, opponent):
         """
