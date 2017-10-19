@@ -101,7 +101,6 @@ def generate_ship_coords(board, internal_testing = False):
 
             # test the collection against used area
             if not is_ship_at_or_beside_another(used_area_points, ship_points):
-                print(ship_start_end_coord_pair)
                 ships[ship_key] = ship_points[:] # places a copy in dict
                 ship_count += 1
                 # add points of the newly generated ship to the used area

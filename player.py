@@ -6,7 +6,9 @@ from square import Square
 from abrain import ABrain  # new AI abstract class
 from ship_position_picker import get_ship_dictionary_from_user_input
 import os
-import time
+# import time
+import sys
+import ship_generator
 
 
 class Player():
@@ -53,7 +55,7 @@ class Player():
         print(" | Game info: {} toure:".format(self.name))    
         print(separator)
 
-    def choose_ships_placement(self):
+    def get_ships_placement(self):
         """
         Choose ships placement (coordinates) by Player.
 
@@ -75,7 +77,7 @@ class Human(Player):
 
     def __init__(self, name):
         self.name = name
-        self.choose_ships_placement()
+        self.get_ships_placement()
         self.fields = []
         self.fill_list_with_Square_obj()
         self.board = Ocean(self.my_ships, self.fields)  # create board
@@ -103,25 +105,7 @@ class Human(Player):
         Returns dict of ships placement coordinates.
         """
         return get_ship_dictionary_from_user_input()
-        '''
-        all_ships_coordinates = {}
-
-        for ship in self.ships:
-            Human.choose_ship_picture(ship)
-            ship_coordinates = []
-            for element in range(ship.hit_points):
-                coordinate = self._input_and_check_coordinates()
-                ship_coordinates.append(coordinate)
-                print('\n')
-     
-            all_ships_coordinates[ship.__name__] = ship_coordinates
-            os.system('clear')
-            # BĘDZIE ZUPEŁNIE INACZEJ
-            # metoda Michała - walidacja
-            # # print(all_ships_coordinates)  # temporary
-
-        return all_ships_coordinates
-        '''
+        
     def _input_and_check_coordinates(self):
         """
         Take coordinates from Player.
@@ -139,10 +123,14 @@ class Human(Player):
         row_index = ""
         while not row_index or row_index not in correct_letters:
             row_index = input("      Please, specify row (A - J): ").upper()
+            sys.stdout.write("\033[F")  # goes one line up
+            sys.stdout.write("\033[K")  # clears the line
         coordinate.append(correct_letters.index(row_index))
         while True:
             try:
                 column_index = int(input("      Please, specify column (1 - 10): "))
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[K")
                 if column_index in range(1, 11):
                     coordinate.append(column_index - 1)
                     break
@@ -170,7 +158,7 @@ class Human(Player):
             Human.print_ship_picture("destroyer_PHOTO.md")
 
     @staticmethod
-    def print_ship_picture(filename):
+    def print_ship_picture(filename):               ###################tego już nie będziemy używać
         with open(filename, "r", encoding="utf8") as myfile:
             myfile = myfile.read().splitlines()
             for line in myfile:
@@ -194,9 +182,9 @@ class AI(Player, ABrain):
     name = "AI"
 
     def __init__(self):
-        self.choose_ships_placement()
         self.fields = []
         self.fill_list_with_Square_obj()
+        self.get_ships_placement()
         self.board = Ocean(self.my_ships, self.fields)  # create board
 
     def _set_coordinates(self):
@@ -205,15 +193,15 @@ class AI(Player, ABrain):
 
         Returns dict of ships placement coordinates.
         """
-        # tutaj metoda Michała
-        # # tymczasowo:
-        test_dict = {
-                    'Battleship': [[2, 3], [2, 4], [2, 5], [2, 6]]} #,
-                    # 'Cruiser': [[4,3],[4,2],[4,1]],
-                    # 'Carrier': [[6,6],[7,6],[8,6]]
-                    # }
-        return test_dict  # temporary
-        # return ship_generator.generate_ship_coords(self.board)
+        # # tutaj metoda Michała
+        # # # tymczasowo:
+        # test_dict = {
+        #             'Battleship': [[2, 3], [2, 4], [2, 5], [2, 6]]} #,
+        #             # 'Cruiser': [[4,3],[4,2],[4,1]],
+        #             # 'Carrier': [[6,6],[7,6],[8,6]]
+        #             # }
+        # return test_dict  # temporary
+        return ship_generator.generate_ship_coords(self.fields)
 
     def choose_attack_coordinates(self, opponent):
         """

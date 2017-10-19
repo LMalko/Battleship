@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 from game_flow import *
 
@@ -12,7 +13,7 @@ def delay_print(s):
 
 
 def main():
-
+    sys.stdout.write("\x1b[8;100;200t")     # sets terminal width to 100 x 200
     os.system("clear")
 
     #with open("story.md", "r", encoding="utf8") as myfile:
