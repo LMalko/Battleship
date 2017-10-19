@@ -105,5 +105,3 @@ class GameFlow():
         for line in sorted(HALL_OF_FAME, key=lambda line: int(line.split()[0])):
             print('{:04d}'.format(list_place), ".", "".join(line))
             list_place += 1
-
-

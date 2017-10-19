@@ -137,8 +137,8 @@ __ship_position_picker.py__
 
 	Functions:
 
-	getch_single_character():
-	getch_two_characters():
+	getch_single_character(): single character
+	getch_two_characters():	double character
 	handle_origin_movement(board, direction, origin_char, origin_pos, old_origin_character):str
 	overwrite_board(left, right, coords):list
 	overlay_board(board, layer):list
@@ -147,7 +147,8 @@ __ship_position_picker.py__
 	get_predefined_color(color):dict
 	adjust_points_color(board, ship_points, start_end_coords, direction_key, directed_colors, used_area_points):None
 	lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, board_offset):None
-	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset, ship_length,     						   chosen_direction,used_area_points,possible_ship_directions):list
+	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset,ship_length
+		,chosen_direction,used_area_points,possible_ship_directions):list
 	colored_string(string, color):str
 	message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):str
 	handle_arrows(user_input, preferred_direction, possible_ship_directions):obj
@@ -158,13 +159,56 @@ __ship_position_picker.py__
 	get_ship_dictionary_from_user_input():None
 	main():None
 
-__ship.py__#
+__ship.py__
+Creates 10 'ship' objects.
 
-Methods:
+class Ship():
 
-__square.py__#
+	Methods:
+	
+	decrement_hp(self): None
+	__str__(self): str
 
-Methods:
+class Destroyer(Ship):
 
+	Methods:
+
+	__init__(self): None
+
+class Submarine(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+class Cruiser(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+class Battleship(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+class Carrier(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+
+__square.py__
+Creates 100 'square' objects.
+
+class Square():
+
+	Methods:
+
+	__init__(ship_instance=None): None
+	was_hit(): str
+	__str__(): str
 
 

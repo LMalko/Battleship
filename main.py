@@ -13,9 +13,10 @@ def delay_print(string):
         time.sleep(0.010)
 
 
-def main():   
+def main():
     os.system("clear")
-    sys.stdout.write("\x1b[8;100;200t")     # Sets terminal width to 100 x 200
+    # Sets terminal width to 100 x 200
+    sys.stdout.write("\x1b[8;100;200t")
 
     with open("story.md", "r", encoding="utf8") as myfile:
         for line in myfile:
@@ -24,7 +25,7 @@ def main():
         os.system("clear")
 
     with open("battleship.md", "r", encoding="utf8") as myfile:
-        myfile = myfile.read().splitlines() 
+        myfile = myfile.read().splitlines()
         for line in myfile:
             print(line)
     getch_single_character()
