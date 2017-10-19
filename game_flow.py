@@ -2,6 +2,7 @@ from ocean import *
 from player import *
 from ship import *
 from square import *
+from main import *
 import os
 
 
@@ -81,14 +82,31 @@ class GameFlow():
 
         self.difficulty_lvl = difficulty_lvl
 
-    def init_hall_of_fame(self, filename):  # dostanie z maina obiekt klasy player(zwycięzcę)
-        with open(filename, "a", encoding="utf8") as myfile:
-            myfile.write(self.DO_USTALENIA)               # wpisać co wysyłamy do pliku(self.name + self.turn_count ?)
+    def init_hall_of_fame(self, filename):
+        ''' Writes to hall_of_fame file.'''
+        with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
+            user_score = [player.name, square.hit_count]                        #do ustalenia
+            user_score = "        ".join(user_score)
+            HALL_OF_FAME.write(str(user_score) + "\n")
+            print("Wciśnij cokolwiek.")
+            input_char = getch()
 
     def show_hall_of_fame(self, filename):
-        with open(filename, "r", encoding="utf8") as myfile:
-            for line in myfile:
-                print(line)
+        ''' Reads from and prints hall_of_fame file.'''
+        with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
+            os.system("clear")
+            print("\nHALL_OF_FAME:\n")
+            HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
+            list_place = 1
+        for i in HALL_OF_FAME:
+            print('{:04d}'.format(list_place), ".", "".join(i))
+            list_place += 1
+            print("Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść.")
+            input_char = getch()
+            os.system("clear")
+            if input_char.upper() == "Y":
+                main()
+            sys.exit()
 
 
 # test_gameflow = GameFlow()
