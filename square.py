@@ -11,7 +11,7 @@ class Square():
 
     def was_hit(self):
 
-        if isinstance(self.associated_class_obj, Ship):
+        if isinstance(self.associated_class_obj, Ship) and self.single_square_hit_count == 0:
             self.associated_class_obj.decrement_hp()
             self.single_square_hit_count = 1
             if self.associated_class_obj.hit_points == 0:

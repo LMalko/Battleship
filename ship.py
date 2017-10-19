@@ -6,24 +6,39 @@ class Ship():
         self.hit_points -= 1
 
     def __str__(self):
-        return self.__class__.__name__ + ", HP: " + str(self.hit_points)
+        return self.__class__.__name__ + ", HP: " + '⛵ ' * self.hit_points + '✖ '*(self.max_hit_points - self.hit_points)# str(self.hit_points)
 
 
 class Destroyer(Ship):
-    hit_points = 2
+    max_hit_points = 2
+    
+    def __init__(self):
+        self.hit_points = self.max_hit_points
 
 
 class Submarine(Ship):
-    hit_points = 3
+    max_hit_points = 3
+
+    def __init__(self):
+        self.hit_points = self.max_hit_points
 
 
 class Cruiser(Ship):
-    hit_points = 3
+    max_hit_points = 3
+
+    def __init__(self):
+        self.hit_points = self.max_hit_points
 
 
 class Battleship(Ship):
-    hit_points = 4
+    max_hit_points = 4
+
+    def __init__(self):
+        self.hit_points = self.max_hit_points
 
 
 class Carrier(Ship):
-    hit_points = 5
+    max_hit_points = 5
+
+    def __init__(self):
+        self.hit_points = self.max_hit_points

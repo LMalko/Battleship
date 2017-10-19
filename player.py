@@ -13,11 +13,11 @@ import ship_generator
 
 class Player():
     """Abstract Player class."""
-    name = "Noname" #po cooooooo to tu?
+    # name = "Noname" #po cooooooo to tu?
     # Player's availible ships:
     # ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
-    board_row_len = None  # Ocean object
+    board_row_len = 0  # Ocean object
     game_message = [' ', ' ', ' ', ' ', ' ']
 
     def perform_hit(self, opponent):
@@ -44,13 +44,13 @@ class Player():
         self.game_message.append(self.name + ' ' + opponent.board.ocean_fields[x_coord][y_coord].was_hit())   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
         # if isinstance(self, Human):
 
-        
+
     def display_message(self, opponent):
         separator = '-'*self.board_row_len
-        
+
         players_navy = self.__str__().split('\n')
         separator_index = 0
-    
+
 
 
 
@@ -61,7 +61,7 @@ class Player():
             message_box.append(" | Gameplay: {}".format(message).ljust(self.board_row_len))
             # print(" | Gameplay: {}".format(message).ljust(self.board_row_len))
         message_box.append(separator[:int(len(separator)/2)].ljust(self.board_row_len))
-        # print(separator[:int(len(separator)/2)]) 
+        # print(separator[:int(len(separator)/2)])
         message_box.append(" | Game info: {} toure:".format(self.name).ljust(self.board_row_len))
         # print(" | Game info: {} toure:".format(self.name))
         message_box.append(separator)
@@ -77,7 +77,7 @@ class Player():
         Returns dict with ship coordinates, eg.
         {"Destroyer": [[0, 0], [0, 1], "Submarine": ...}
         """
-        self.my_ships = self._set_coordinates()
+        self.my_ships = self.__initialize_ship_coordinates()
 
     def fill_list_with_Square_obj(self):
         board_side_length = 10
@@ -108,7 +108,7 @@ class Human(Player):
         print('   ' + self.name + ", it's bombard time! \n   Please specify attack coordinates:\n")
         return self._input_and_check_coordinates()
 
-    def _set_coordinates(self):
+    def _initialize_ship_coordinates(self):
         """
         Input coordinates by User (format: A1, B1, etc..).
 
@@ -120,7 +120,7 @@ class Human(Player):
         Returns dict of ships placement coordinates.
         """
         return get_ship_dictionary_from_user_input()
-        
+
     def _input_and_check_coordinates(self):
         """
         Take coordinates from Player.
@@ -149,11 +149,10 @@ class Human(Player):
                 if column_index in range(1, 11):
                     coordinate.append(column_index - 1)
                     break
-                else:
-                    print(invalid_input_info)
 
-            except:
-                print(invalid_input_info)
+            except ValueError:
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[K")
         return coordinate
 
 
@@ -203,7 +202,7 @@ class AI(Player, ABrain):
         self.board = Ocean(self.my_ships, self.fields)  # create board
         self.intelligence = iq
 
-    def _set_coordinates(self):
+    def __initialize_ship_coordinates(self):
         """
         AI generate ships placement (coordinates).
 
@@ -230,4 +229,3 @@ class AI(Player, ABrain):
             navy_str += " | {}\n".format(ship)
 
         return navy_str + separator
-
