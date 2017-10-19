@@ -17,11 +17,22 @@ Under JERZY'S orders, YOU begin a game of battleship.
 
 ## Specification
 
-
 __main.py__
 
+Creates GameFlow instance.
+
+Functions:
+	delay_print(string):
+	main():
+
+__game_flow.py__
+__abrain.py__
+__battleship.py__
+__ocean.py__
+__player.py__
+__quiz.py__
+__ship_generator.py__
+__ship_position_picker.py__
+__ship.py__
 __square.py__
 
-__ship.py__
-
-__ocean.py__
