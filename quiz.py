@@ -1,4 +1,4 @@
-import time
+from ship_position_picker import getch_single_character
 import os
 
 
@@ -7,7 +7,7 @@ def summary(correct_answers_count):
 
     os.system("clear")
     print("\n\n\nYour result is: " + str(correct_answers_count) + " out of 7")
-    time.sleep(3)
+    getch_single_character()
     os.system("clear")
 
 
@@ -35,7 +35,7 @@ def quiz_flow(questions, answers):
         if user_answer == correct_answer_index_numbers_list[correct_answer_index_number]:
             os.system("clear")
             print("Correct!!!")
-            time.sleep(2)
+            getch_single_character()
             os.system("clear")
             correct_answers_count += 1
         else:
@@ -43,7 +43,7 @@ def quiz_flow(questions, answers):
             print("No.\nCorrect answer is ",
                   answers[question_number]
                   [(correct_answer_index_numbers_list[correct_answer_index_number])])
-            time.sleep(2)
+            getch_single_character()
             os.system("clear")
 
         question_number += 1
