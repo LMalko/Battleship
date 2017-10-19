@@ -41,18 +41,18 @@ class Player():
         y_coord = coords[1]
 
         del self.game_message[0]
-        self.game_message.append(self.name + ' ' + opponent.board.fields[x_coord][y_coord].was_hit())   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
+        self.game_message.append(self.name + ' ' + opponent.board.ocean_fields[x_coord][y_coord].was_hit())   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
         # if isinstance(self, Human):
 
-        
+
     def display_message(self, opponent):
         separator = '-'*self.board_row_len
 
         print(separator)
         for message in self.game_message:
             print(" | Game info: {}".format(message))
-        print(separator[:int(len(separator)/2)])           
-        print(" | Game info: {} toure:".format(self.name))    
+        print(separator[:int(len(separator)/2)])
+        print(" | Game info: {} toure:".format(self.name))
         print(separator)
 
     def get_ships_placement(self):
@@ -68,9 +68,9 @@ class Player():
         board_side_length = 10
 
         for empty_list in range(board_side_length):
-            self.fields.append([])
+            self.ocean_fields.append([])
             for single_element in range(board_side_length):
-                self.fields[empty_list].append(Square())
+                self.ocean_fields[empty_list].append(Square())
 
 class Human(Player):
     """This is User-Player class."""
@@ -78,9 +78,9 @@ class Human(Player):
     def __init__(self, name):
         self.name = name
         self.get_ships_placement()
-        self.fields = []
+        self.ocean_fields = []
         self.fill_list_with_Square_obj()
-        self.board = Ocean(self.my_ships, self.fields)  # create board
+        self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
         board_bar_len = self.board.__str__().split('\n')
         Player.board_row_len = len(board_bar_len[0]) # ustawia długość belki do printów
 
@@ -105,7 +105,7 @@ class Human(Player):
         Returns dict of ships placement coordinates.
         """
         return get_ship_dictionary_from_user_input()
-        
+
     def _input_and_check_coordinates(self):
         """
         Take coordinates from Player.
@@ -186,6 +186,12 @@ class AI(Player, ABrain):
         self.fill_list_with_Square_obj()
         self.get_ships_placement()
         self.board = Ocean(self.my_ships, self.fields)  # create board
+
+    def __init__(self):
+        self.ocean_fields = []
+        self.fill_list_with_Square_obj()
+        self.get_ships_placement()
+        self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
         self.intelligence = iq
 
     def _set_coordinates(self):
@@ -194,7 +200,7 @@ class AI(Player, ABrain):
 
         Returns dict of ships placement coordinates.
         """
-        return ship_generator.generate_ship_coords(self.fields)
+        return ship_generator.generate_ship_coords(self.ocean_fields)
 
     def choose_attack_coordinates(self, opponent):
         """
