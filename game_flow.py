@@ -2,7 +2,7 @@ from ocean import *
 from player import *
 from ship import *
 from square import *
-from main import main
+from main import *
 import os
 
 
