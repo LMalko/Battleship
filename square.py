@@ -36,4 +36,4 @@ class Square():
         elif self.single_square_hit_count > 0:
             return "X"
         else:
-            return "O"
+            return " "
