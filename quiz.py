@@ -53,7 +53,7 @@ def quiz_flow(questions, answers):
     summary(correct_answers_count)
 
 
-def main():
+def start():
     os.system("clear")
     print("WELCOME TO BATTLESHIP QUIZ - najnudniejszym quizie w sieci !!\nAnswer the following questions:\n\n")
 
@@ -75,4 +75,4 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    start()

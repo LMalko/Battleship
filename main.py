@@ -20,14 +20,14 @@ def main():
     #with open("story.md", "r", encoding="utf8") as myfile:
         #for line in myfile:
             #delay_print(line)
-        #time.sleep(3)
+        #getch_single_character()
         #os.system("clear")
 
     with open("battleship.md", "r", encoding="utf8") as myfile:
         myfile = myfile.read().splitlines() 
         for line in myfile:
             print(line)
-    input("")
+    getch_single_character()
     os.system('clear')
     start_time = time.time()
     this_game = GameFlow()

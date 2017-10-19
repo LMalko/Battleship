@@ -3,6 +3,7 @@ from player import *
 from ship import *
 from square import *
 from main import *
+from quiz import start
 import os
 
 
@@ -42,7 +43,7 @@ class GameFlow():
         return False
 
     def choose_play_mode(self):
-        play_modes = ['Choose game mode:', ' 1. Singleplayer', ' 2. Multiplayer']
+        play_modes = ['Choose game mode:', ' 1. Singleplayer', ' 2. Multiplayer', ' 3. Quiz']
         while True:
             self.print_list(play_modes)
             mode = input(" Pass mode number: ")
@@ -52,6 +53,8 @@ class GameFlow():
             elif mode == '2':
                 self.play_mode = 2
                 return Human(self.choose_players_name())
+            elif mode == '3':
+                start()
             else:
                 print('Input must be a number from given scope.\n')
 
