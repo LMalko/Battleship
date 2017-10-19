@@ -9,11 +9,11 @@ import os
 class GameFlow():
 
     turn_count = 0
-    difficulty_lvl = 0
+    difficulty_lvl = 1
     play_mode = ''
 
     def __init__(self):
-
+        self.difficulty_lvl
         self.player_one = self.choose_play_mode()
         self.player_two = Human(self.choose_players_name())
 
@@ -48,7 +48,7 @@ class GameFlow():
             mode = input(" Pass mode number: ")
             if mode == '1':
                 self.play_mode = 1
-                return AI()
+                return AI(self.difficulty_lvl)
             elif mode == '2':
                 self.play_mode = 2
                 return Human(self.choose_players_name())
@@ -80,7 +80,7 @@ class GameFlow():
             else:
                 print("Input must be a number from given scope.\n")
 
-        self.difficulty_lvl = difficulty_lvl
+        self.difficulty_lvl = int(difficulty_lvl)
 
     def init_hall_of_fame(self, filename):
         ''' Writes to hall_of_fame file.'''

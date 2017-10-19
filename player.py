@@ -15,7 +15,7 @@ class Player():
     """Abstract Player class."""
     name = "Noname" #po cooooooo to tu?
     # Player's availible ships:
-    ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
+    # ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board_row_len = None  # Ocean object
     game_message = [' ', ' ', ' ', ' ']
@@ -193,14 +193,6 @@ class AI(Player, ABrain):
 
         Returns dict of ships placement coordinates.
         """
-        # # tutaj metoda Michała
-        # # # tymczasowo:
-        # test_dict = {
-        #             'Battleship': [[2, 3], [2, 4], [2, 5], [2, 6]]} #,
-        #             # 'Cruiser': [[4,3],[4,2],[4,1]],
-        #             # 'Carrier': [[6,6],[7,6],[8,6]]
-        #             # }
-        # return test_dict  # temporary
         return ship_generator.generate_ship_coords(self.fields)
 
     def choose_attack_coordinates(self, opponent):
