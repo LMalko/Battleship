@@ -10,12 +10,12 @@ def delay_print(string):
     for character in string:
         sys.stdout.write("%s" % character)
         sys.stdout.flush()
-        time.sleep(0.010)
+        time.sleep(0.004)
 
 
 def main():
     os.system("clear")
-    # Sets terminal width to 100 x 200
+    # Sets terminal width to 100 x 200.
     sys.stdout.write("\x1b[8;100;200t")
 
     with open("story.md", "r", encoding="utf8") as myfile:

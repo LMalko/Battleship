@@ -5,30 +5,24 @@ import random
 
 class ABrain():
     """Abstract class with attribs and methods used in class AI(Player)."""
-    # ai_memo (dict) contains coordinates of all past ai shots:
-    #   key = coords, value = bool (True if shot was accurate)
-    # eg. {(0, 1): False}
+    # Ai_memo (dict) contains coordinates of all past ai shots:
+    # key = coords, value = bool (True if shot was accurate).
     ai_memo = {}
     last_accurate_coords = ()
-    # intelligence (integer) specify ai accuracy in shooting enemy ships
-    # depends on game difficulty_lvl (GameFlow):
-    #       easy: intelligence = 1
-    #       normal: intelligence = 2
-    #       hard: intelligence = 3
+    # Intelligence (integer) specify ai accuracy in shooting enemy ships depends on game difficulty_lvl.
     intelligence = 1
-    # should_search_... is part of ai memory,
-    # which has influence on ai choices:
+    # Should_search_... is part of ai memory, which has influence on ai choices.
     should_search_horisontal = False
     should_search_vertical = False
 
     def search_and_try_destroy(self, opponent):
         """Start searching & shooting process, returns coordinates."""
-        # if the last accurate shot was not long ago:
+        # If the last accurate shot was not long ago.
         if self.__check_if_bother_last_accurate_coords(opponent):
-            # try in ocean_fields in neighborhood:
+            # Try in ocean_fields in neighborhood,
             coords = self.__check_coords_next_to(opponent)
         else:
-            # or try in new ocean_fields
+            # or try in new ocean_fields.
             coords = self.__check_new_coords(opponent)
         return coords
 
@@ -43,16 +37,10 @@ class ABrain():
             return False
 
     def __check_new_coords(self, opponent):
-        """
-        Check (random choice) new attack coordinates.
-        tries_number: (integer) specify number of tries, formula:
-            AI's intelligence * difficulty_modifier
-        tries_modifier: (integer) higher means more tries for AI.
-        Returns attack coordinates.
-        """
+        """ Returns attack coordinates. """
         tries_modifier = 1
         tries_number = self.intelligence * tries_modifier
-        # starting tmp coords
+        # Starting tmp coords.
         coords = (10, 10)
         for tries in range(tries_number):
             for check in range(40):
@@ -68,7 +56,7 @@ class ABrain():
             self.__remember_used_coords(coords, checker)
             if checker:
                 return coords
-        # if can't find any unused field to attack:
+        # If can't find any unused field to attack.
         if coords == (10, 10):
             coords = self.__find_field_in_desperado_mode(opponent)
             return coords
@@ -76,7 +64,7 @@ class ABrain():
             return coords
 
     def __check_coords_next_to(self, opponent):
-        """Check ocean_fields in neighborhood of last accurate shot."""
+        """ Returns tuple with coords."""
         x_coord = self.last_accurate_coords[0]
         y_coord = self.last_accurate_coords[1]
         if self.should_search_vertical or self.should_search_horisontal:
@@ -105,12 +93,7 @@ class ABrain():
         return coords
 
     def __check_if_bother_last_accurate_coords(self, opponent):
-        """
-        Check if it makes sense to relate to last accurate shot.
-        acceptable_topicality: (integer) increases the tolerance
-            for the use of past results.
-        Returns bool.
-        """
+        """ Check if it makes sense to relate to last accurate shot. Returns bool. """
         if self.last_accurate_coords:
             all_coords = list(self.ai_memo.keys())
             index = all_coords.index(self.last_accurate_coords)
@@ -125,17 +108,14 @@ class ABrain():
         return False
 
     def __remember_used_coords(self, coords, checker):
-        """Save result of last shot in memory."""
+        """ Save result of last shot in memory."""
         if coords not in self.ai_memo:
             self.ai_memo[(coords)] = checker
 
     def __check_if_new_coords_in_board_and_not_in_memo(self, x_coord, y_coord):
-        """
-        Take coordinates and check if they're not in memory (so they're fresh).
+        """ Take coordinates and check if they're not in memory (so they're fresh).
         Check if coordinates are in correct range (0, 9).
-        Reason: AI can save them as new result.
-        Returns bool.
-        """
+        Reason: AI can save them as new result. Returns bool."""
         condition_1 = x_coord in range(0, 9)
         condition_2 = y_coord in range(0, 9)
         condition_3 = (x_coord, y_coord) not in self.ai_memo
@@ -143,14 +123,9 @@ class ABrain():
             return True
         return False
 
-    def __search_horison_or_vert(
-                                self, x_coord, y_coord,
-                                opponent, mode="horisontal"):
-        """
-        Start searching in horisontal or vertical mode (modify x or y coord)
-        for better accuracy.
-        Used while searching ocean_fields near last accurate shoot.
-        """
+    def __search_horison_or_vert( self, x_coord, y_coord, opponent, mode="horisontal"):
+        """ Start searching in horisontal or vertical mode (modify x or y coord) for better accuracy.
+        Used while searching ocean_fields near last accurate shoot. """
         if mode == "horisontal":
             coord = y_coord
         else:
