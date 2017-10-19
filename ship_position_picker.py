@@ -130,9 +130,19 @@ def set_message(msg_board, message):
             msg_board[y][x] = " "
 
     for i, subline in enumerate(message.split("\n")):
-        for j, char in enumerate(subline):
-            msg_board[i+1][j] = char
+        input_idx = 0
+        output_idx = 0
+        while input_idx < len(subline):
+            if subline[input_idx] == "\x1b": # escape sequence begin?
+                # take escape + 2 next characters => color
+                color_seq = subline[input_idx:input_idx+5] + " "
+                msg_board[i+1][output_idx] = color_seq
+                input_idx += 5
+            else:
+                msg_board[i+1][output_idx] = subline[input_idx]
+                input_idx += 1
 
+            output_idx += 1
 
 def get_predefined_color(color):
     colors = {
@@ -276,9 +286,9 @@ def colored_string(string, color):
 def message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):
     if possible_ship_directions[preferred_direction[0]][0] == True:
         # the ship can be placed
-        return colored_string("You can set ship here.\n\n Press Enter to save the ship\n at this position.", "green")
+        return colored_string("You can set ship here.", "green") + "\n\n Press Enter to save the ship\n at this position."
     else:
-        return colored_string("You can't set ship here.\n\n Change direction using arrows\n or move origin with WSAD somewhere else.", "red")
+        return colored_string("You can't set ship here.", "lightred") + "\n\n Change direction using arrows\n or move origin with WSAD somewhere else."
 
 def handle_arrows(user_input, preferred_direction, possible_ship_directions):
     UP_ARROW = "\x1b[A"
@@ -305,8 +315,8 @@ def handle_tab(ship_keys_ordered, ship_types, current_ship_type_index):
     if len(ship_keys_ordered):
         current_ship_type_index[0] = (current_ship_type_index[0]+1) % len(ship_keys_ordered)
         particular_type = ship_keys_ordered[current_ship_type_index[0]]
-        return " Currently selected ship type:\n    %s (weight: %u)" % \
-         (particular_type, ship_types[particular_type])
+        return " Currently selected ship type:\n" + \
+            colored_string("    %s (weight: %u)" % (particular_type, ship_types[particular_type]), "yellow")
     else:
          return " Currently selected ship type:\n    " + colored_string("None", "orange")
 
@@ -356,7 +366,7 @@ def handle_enter(
             ship_keys_ordered.append(new_ship_keys[i])
 
         current_ship_type_index[0] = 0
-        return "Added %s, length: %u" % (current_ship_type, len(ship_points))
+        return colored_string("Added %s, length: %u" % (current_ship_type, len(ship_points)), "cyan")
     else:
         return ""
 
@@ -422,7 +432,13 @@ def get_ship_dictionary_from_user_input():
             used_area_points,
             possible_ship_directions)
 
-        can_set_ship_msg = message_is_possible_to_place_ship(preferred_direction, possible_ship_directions)
+        if "None" in ship_type_msg:
+            can_set_ship_msg = "[all ships have been placed]"
+        else:
+            can_set_ship_msg = message_is_possible_to_place_ship(
+                preferred_direction,
+                possible_ship_directions)
+
         output_msg = ship_type_msg + "\n\n " + can_set_ship_msg + "\n\n " + aux_msg
         set_message(message_board, output_msg)
 
