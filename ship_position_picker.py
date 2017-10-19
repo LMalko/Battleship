@@ -175,11 +175,11 @@ def adjust_points_color(board, ship_points, start_end_coords, direction_key, dir
             directed_colors[direction_key] = get_predefined_color("green")
 
 
-def lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, origin_offset):
+def lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, board_offset):
     default_color = get_predefined_color("default")
     for point in points:
-        x = point[0] + origin_offset[0]
-        y = point[1] + origin_offset[1]
+        x = point[0] + board_offset[0]
+        y = point[1] + board_offset[1]
         layer[y][x] = directed_colors[direction_key] + fill_char + default_color
 
 
@@ -194,7 +194,7 @@ def get_painted_layer_with_ghost_ships(
     board,
     sandbox,
     origin_coords,
-    origin_offset,
+    board_offset,
     ship_length,
     chosen_direction,
     used_area_points,
@@ -247,16 +247,16 @@ def get_painted_layer_with_ghost_ships(
     adjust_points_color(board, south_points, south_option, "South", directed_colors, used_area_points)
     # put the points onto the layer
     fill_block = solid_solid_block if preferred_direction == "left" else blurred_solid_block
-    lay_ghost_points(layer, west_points, fill_block, "West", directed_colors, origin_offset)
+    lay_ghost_points(layer, west_points, fill_block, "West", directed_colors, board_offset)
 
     fill_block = solid_solid_block if preferred_direction == "right" else blurred_solid_block
-    lay_ghost_points(layer, east_points, fill_block, "East", directed_colors, origin_offset)
+    lay_ghost_points(layer, east_points, fill_block, "East", directed_colors, board_offset)
 
     fill_block = solid_solid_block if preferred_direction == "up" else blurred_solid_block
-    lay_ghost_points(layer, north_points, fill_block, "North", directed_colors, origin_offset)
+    lay_ghost_points(layer, north_points, fill_block, "North", directed_colors, board_offset)
 
     fill_block = solid_solid_block if preferred_direction == "down" else blurred_solid_block
-    lay_ghost_points(layer, south_points, fill_block, "South", directed_colors, origin_offset)
+    lay_ghost_points(layer, south_points, fill_block, "South", directed_colors, board_offset)
 
     # update possible_ships_dict
     # adjust start-end ghost ship coordinates to include origin
@@ -371,11 +371,48 @@ def handle_enter(
         return ""
 
 
+def draw_sandbox_row_col_marks(sandbox, board_offset):
+    # draw column numbers
+    col_num_start_coord = [ board_offset[0], board_offset[1] - 2 ]
+    col_x = col_num_start_coord[0]
+    col_y = col_num_start_coord[1]
+    for i in range(10):
+        if i + 1 == 10: # two characters
+            numstr = str(i+1)
+            # first character
+            sandbox[col_y][col_x + i] = \
+                numstr[0] if i % 2 == 0 else \
+                colored_string(numstr[0], "lightblue")
+            # second character
+            sandbox[col_y][col_x + i + 1] = \
+                numstr[1] if i % 2 == 0 else \
+                colored_string(numstr[1], "lightblue")
+        else:
+            # single character
+            sandbox[col_y][col_x + i] = \
+                str(i+1) if i % 2 == 0 else \
+                colored_string(str(i+1), "lightblue")
+
+    # draw row marks
+    row_mark_start_coord = [ board_offset[0] - 2, board_offset[1] ]
+    row_x = row_mark_start_coord[0]
+    row_y = row_mark_start_coord[1]
+    for i in range(10):
+        sandbox[row_y + i][row_x] = \
+            chr(ord("A") + i) if i % 2 == 0 else \
+            colored_string(chr(ord("A") + i), "lightblue")
+
+
 def get_ship_dictionary_from_user_input():
     board = ship_generator.__generate_board(10,10)
     sandbox_fillchar = colored_string(u"\u2591", "lightgrey")
-    sandbox = ship_generator.__generate_board(20,20,sandbox_fillchar)
-    message_board = ship_generator.__generate_board(50,20)
+    sandbox = ship_generator.__generate_board(21,21,sandbox_fillchar)
+    message_board = ship_generator.__generate_board(70,21)
+    for dx in range(len(sandbox[0])):
+        sandbox[0][dx] = " "
+
+    for dy in range(len(sandbox)):
+        sandbox[dy][0] = " "
 
     origin_pos = [ 5, 5 ]
     movement_specifiers = ("w", "s", "a", "d")
@@ -406,7 +443,10 @@ def get_ship_dictionary_from_user_input():
     board[origin_pos[1]][origin_pos[0]] = origin_char
 
     used_area_points = []
-    origin_offset = [5,5]
+    board_offset = [6,6]
+
+    draw_sandbox_row_col_marks(sandbox, board_offset)
+
     created_ships = {}
     can_set_ship_msg = ""
     aux_msg = "Use WSAD to move origin.\n\n Use arrows to choose ship position."
@@ -426,7 +466,7 @@ def get_ship_dictionary_from_user_input():
             board,
             sandbox,
             origin_pos,
-            origin_offset,
+            board_offset,
             ship_length_argument,
             preferred_direction,
             used_area_points,
@@ -442,8 +482,10 @@ def get_ship_dictionary_from_user_input():
         output_msg = ship_type_msg + "\n\n " + can_set_ship_msg + "\n\n " + aux_msg
         set_message(message_board, output_msg)
 
-        # combine sandbox board with board and overlay ghost_layer on top of that composition
-        layered = overlay_board(overwrite_board(sandbox, board, origin_offset), ghost_layer)
+        # combine sandbox board with board
+        combined_sandbox_board = overwrite_board(sandbox, board, board_offset)
+        # overlay ghost_layer on top of that composition
+        layered = overlay_board(combined_sandbox_board, ghost_layer)
         # print a horizontal bind of the above board with message board
         ship_generator.__print_board(bind_maps_horz(layered, message_board))
 
