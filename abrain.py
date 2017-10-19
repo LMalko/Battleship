@@ -7,7 +7,8 @@ class ABrain():
     """Abstract class with attribs and methods used in class AI(Player)."""
     # ai_memo (dict) contains coordinates of all past ai shots:
     #   key = coords, value = bool (True if shot was accurate)
-    ai_memo = {}  # eg. {(0, 1): False}
+    # eg. {(0, 1): False}
+    ai_memo = {}  
     last_accurate_coords = ()
     # intelligence (integer) specify ai accuracy in shooting enemy ships
     # depends on game difficulty_lvl (GameFlow):
@@ -51,7 +52,8 @@ class ABrain():
         """
         tries_modifier = 1
         tries_number = self.intelligence * tries_modifier
-        coords = (10, 10)  # starting tmp coords
+        # starting tmp coords
+        coords = (10, 10)  
         for tries in range(tries_number):
             for check in range(40):
                 x_coord = random.randint(0, 9)
