@@ -115,7 +115,7 @@ __player.py__
 
 ###  Human Class
 
-#### Parent class
+#### Parent Class
 
 	Player
 
@@ -136,7 +136,7 @@ __player.py__
 
 ###  AI Class
 
-#### Parent class
+#### Parent Class
 
 	Player
 
@@ -177,8 +177,8 @@ __ship_generator.py__
 __ship_position_picker.py__
 #### Functions
 
-	getch_single_character():
-	getch_two_characters():
+	getch_single_character(): String
+	getch_two_characters(): String
 	handle_origin_movement(board, direction, origin_char, origin_pos, old_origin_character):str
 	overwrite_board(left, right, coords):list
 	overlay_board(board, layer):list
@@ -198,13 +198,69 @@ __ship_position_picker.py__
 	get_ship_dictionary_from_user_input():None
 	main():None
 
-__ship.py__#
 
-Methods:
+__ship.py__#
+###  Ship Class
+
+#### Methods
+    decrement_hp(): None
+    __str__(): String
+
+
+###  Destroyer Class
+
+#### Attributes
+    max_hit_points
+
+#### Methods
+    __init__(): None
+
+
+###  Submarine Class
+
+#### Attributes
+    max_hit_points
+
+#### Methods
+    __init__(): None
+
+
+###  Cruiser Class
+
+#### Attributes
+    max_hit_points
+
+#### Methods
+    __init__(): None
+
+
+###  Battleship Class
+
+#### Attributes
+    max_hit_points
+
+#### Methods
+    __init__(): None
+
+
+###  Carrier Class
+
+#### Attributes
+    max_hit_points
+
+#### Methods
+    __init__(): None
+	
 
 __square.py__#
+###  Square Class
 
-Methods:
+#### Attributes
+        associated_class_obj: Ship
+        single_square_hit_count: Integer
 
-
+#### Methods
+    __init__(ship_instance=None): None
+    was_hit(): String
+    __str__(): String
 
