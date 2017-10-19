@@ -4,6 +4,7 @@ from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
 from square import Square
 from abrain import ABrain  # new AI abstract class
+from ship_position_picker import get_ship_dictionary_from_user_input
 import os
 import time
 
@@ -101,6 +102,8 @@ class Human(Player):
 
         Returns dict of ships placement coordinates.
         """
+        return get_ship_dictionary_from_user_input()
+        '''
         all_ships_coordinates = {}
 
         for ship in self.ships:
@@ -118,7 +121,7 @@ class Human(Player):
             # # print(all_ships_coordinates)  # temporary
 
         return all_ships_coordinates
-
+        '''
     def _input_and_check_coordinates(self):
         """
         Take coordinates from Player.
@@ -223,7 +226,7 @@ class AI(Player, ABrain):
         board = self.board.__str__()
         board_lines = board.split('\n')
         separator = board_lines[1] + '\n'
-        
+
         navy_str = separator
         navy_str += '   ' + self.name + ' navy:\n' + separator
         for ship in self.board.my_navy:
