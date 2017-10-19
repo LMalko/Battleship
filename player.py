@@ -181,11 +181,12 @@ class AI(Player, ABrain):
 
     name = "AI"
 
-    def __init__(self):
+    def __init__(self, iq):
         self.fields = []
         self.fill_list_with_Square_obj()
         self.get_ships_placement()
         self.board = Ocean(self.my_ships, self.fields)  # create board
+        self.intelligence = iq
 
     def _set_coordinates(self):
         """
@@ -215,7 +216,7 @@ class AI(Player, ABrain):
 
         return navy_str + separator
 #
-comp = AI()
+# comp = AI()
 # jarek = Human("Jarek")
 # print(comp.board)
 # print(jarek.board)

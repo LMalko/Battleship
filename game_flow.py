@@ -13,7 +13,7 @@ class GameFlow():
     play_mode = ''
 
     def __init__(self):
-        self.difficulty_lvl
+        self.set_difficulty_lvl()
         self.player_one = self.choose_play_mode()
         self.player_two = Human(self.choose_players_name())
 
