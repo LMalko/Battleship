@@ -120,10 +120,9 @@ def generate_ship_coords(board, internal_testing = False):
 # function for internal testing
 def __print_board(board):
     for row in board:
-        print("[", end="")
         for elem in row:
             print(elem, end ="")
-        print("]")
+        print()
     print()
 
 
