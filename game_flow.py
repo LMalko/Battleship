@@ -71,7 +71,7 @@ class GameFlow():
         for element in list:
             print(element)
 
-    def set_difficulty_lvl(self):   # podpiąć jak już sie zdecydujemy, czym się różnią poziomy
+    def set_difficulty_lvl(self):
         levels = ['\n 1. Easy', ' 2. Medium', ' 3. Hard']
         self.print_list(levels)
 
@@ -106,20 +106,4 @@ class GameFlow():
             print('{:04d}'.format(list_place), ".", "".join(line))
             list_place += 1
 
-
-# test_gameflow = GameFlow()
-# print('AAAAAAA')
-
-# total_hp_ships = 0
-# for ship in test_gameflow.player_two.board.my_navy:
-#     print(ship)
-#     total_hp_ships += ship.hit_points
-
-# print(test_gameflow.player_two.board)   # wypisuje planszę playera z ustawionymi statkami
-# # test_gameflow.choose_play_mode()    # niepotrzebne, bo powołując instancje wykonuje się init w którym to już jest
-# print('hit_points:', total_hp_ships)
-# test_gameflow.player_two.board.my_navy[0].decrement_hp()
-# test_gameflow.player_two.board.my_navy[0].decrement_hp()
-
-# test_gameflow.check_if_lose(test_gameflow.player_two)
 

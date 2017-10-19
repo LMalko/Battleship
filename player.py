@@ -6,7 +6,6 @@ from square import Square
 from abrain import ABrain  # new AI abstract class
 from ship_position_picker import get_ship_dictionary_from_user_input
 import os
-# import time
 import sys
 import ship_generator
 
@@ -38,7 +37,6 @@ class Player():
         self.game_message.append(self.name + ' ' + opponent.board.ocean_fields[x_coord][y_coord].was_hit())
         # add new message to the message box
 
-
     def display_game_message(self, opponent):
         """
         Concatenates two lists rows into one string and prints it as a table.
@@ -49,7 +47,7 @@ class Player():
         separator = '-'*self.board_row_len
         half_separator = '-'*int(self.board_row_len/2)
         message_box = []
-        players_navy = self.__str__().split('\n')   #retusrn formatted string with players ship inventory
+        players_navy = self.__str__().split('\n')   # retusrn formatted string with players ship inventory
         separator_index = 0
 
         message_box.append(separator)
@@ -83,6 +81,20 @@ class Player():
                 row.append(Square())
             self.ocean_fields.append(row)
 
+    def __str__(self):
+        navy_str = ''
+
+        title_bar = ' | ' + self.name + ' navy:'
+        separator = '-'*int(len(title_bar)) + '\n'
+
+        for ship in self.board.my_navy:
+            formatted_str = " | {}".format(ship)
+            navy_str += formatted_str + '\n'
+            separator_len = int(len(formatted_str))
+        separator = '-' * separator_len + '\n'
+
+        return separator + title_bar.ljust(separator_len) + '\n' + separator + navy_str + separator
+
 
 class Human(Player):
     """This is User-Player class."""
@@ -93,7 +105,7 @@ class Human(Player):
         self._initialize_ocean_fields()
         self.board = Ocean(self.my_ships, self.ocean_fields)  # create players board
         board_bar_len = self.board.__str__().split('\n')
-        Player.board_row_len = len(board_bar_len[0]) # ustawia długość belki do printów
+        Player.board_row_len = len(board_bar_len[0])    # ustawia długość belki do printów
 
     def choose_attack_coordinates(self, opponent):
         """
@@ -152,43 +164,6 @@ class Human(Player):
         return coordinate
 
 
-    @staticmethod
-    def choose_ship_picture(ship_instance):
-        filenames = ["cruiser_PHOTO.md", "battleship_PHOTO.md",
-                     "carrier_PHOTO.md", "submarine_PHOTO.md", "destroyer_PHOTO.md"]
-        if ship_instance.__name__ == "Cruiser":
-            Human.print_ship_picture("cruiser_PHOTO.md")
-        elif ship_instance.__name__ == "Battleship":
-            Human.print_ship_picture("battleship_PHOTO.md")
-        elif ship_instance.__name__ == "Carrier":
-            Human.print_ship_picture("carrier_PHOTO.md")
-        elif ship_instance.__name__ == "Submarine":
-            Human.print_ship_picture("submarine_PHOTO.md")
-        elif ship_instance.__name__ == "Destroyer":
-            Human.print_ship_picture("destroyer_PHOTO.md")
-
-    @staticmethod
-    def print_ship_picture(filename):               ###################tego już nie będziemy używać
-        with open(filename, "r", encoding="utf8") as myfile:
-            myfile = myfile.read().splitlines()
-            for line in myfile:
-                print(line)
-
-    def __str__(self):
-
-        navy_str = ''
-        
-        title_bar = ' | ' + self.name + ' navy:'
-        separator = '-'*int(len(title_bar)) + '\n'
-
-        for ship in self.board.my_navy:
-            formatted_str = " | {}".format(ship)
-            navy_str += formatted_str + '\n'
-            separator_len = int(len(formatted_str))
-        separator = '-'* separator_len + '\n'
-
-        return separator + title_bar.ljust(separator_len) + '\n' + separator + navy_str + separator
-
 class AI(Player, ABrain):
     """This is AI-Player class."""
 
@@ -217,14 +192,4 @@ class AI(Player, ABrain):
         """
         return self.search_and_try_destroy(opponent)
 
-    def __str__(self):
-        board = self.board.__str__()
-        board_lines = board.split('\n')
-        separator = board_lines[1] + '\n'
 
-        navy_str = separator
-        navy_str += '   ' + self.name + ' navy:\n' + separator
-        for ship in self.board.my_navy:
-            navy_str += " | {}\n".format(ship)
-
-        return navy_str + separator
