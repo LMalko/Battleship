@@ -73,13 +73,22 @@ class Player():
         """
         self.my_ships = self._initialize_ship_coordinates()
 
-    def fill_list_with_Square_obj(self):
-        board_side_length = 10
+#    def fill_list_with_Square_obj(self):
+#        board_side_length = 10
 
-        for empty_list in range(board_side_length):
-            self.ocean_fields.append([])
-            for single_element in range(board_side_length):
-                self.ocean_fields[empty_list].append(Square())
+#        for empty_list in range(board_side_length):
+#            self.ocean_fields.append([])
+#            for single_element in range(board_side_length):
+#                self.ocean_fields[empty_list].append(Square())
+
+    def _initialize_ocean_fields(self):
+        board_side_length = 10
+        self.ocean_fields = []
+        for height in range(board_side_length):
+            row = []
+            for width in range(board_side_length):
+                row.append(Square())
+            self.ocean_fields.append(row)
 
 class Human(Player):
     """This is User-Player class."""
@@ -87,8 +96,8 @@ class Human(Player):
     def __init__(self, name):
         self.name = name
         self.get_ships_placement()
-        self.ocean_fields = []
-        self.fill_list_with_Square_obj()
+        self._initialize_ocean_fields()
+        #self.fill_list_with_Square_obj()
         self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
         board_bar_len = self.board.__str__().split('\n')
         Player.board_row_len = len(board_bar_len[0]) # ustawia długość belki do printów
@@ -191,7 +200,7 @@ class AI(Player, ABrain):
 
     def __init__(self, iq):
         self.ocean_fields = []
-        self.fill_list_with_Square_obj()
+        self._initialize_ocean_fields()
         self.get_ships_placement()
         self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
         self.intelligence = iq
