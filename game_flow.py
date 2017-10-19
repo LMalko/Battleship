@@ -1,4 +1,3 @@
-# from main import *
 from ocean import *
 from player import *
 from ship import *
@@ -16,23 +15,18 @@ class GameFlow():
 
         self.player_one = self.choose_play_mode()
         self.player_two = Human(self.choose_players_name())
-        # self.navy = self.player_two.board.show_my_navy()
 
     def fight(self):
-        # wywołane z maina, pętla  zt zwycięzcę(Playera) (?)
-        # z maina można go wpisać do hall of fame itp
-        # zaczyna wybrany czy losowy gracz?
+
         while True:
             self.turn_count += 1
-            self.player_one.perform_hit(self.player_two)     # brak drugiego arg - coordinants powinien pobierać już w perform_hit()
+            self.player_one.perform_hit(self.player_two)
             if self.check_if_lose(self.player_two):
-                # tu print sklejonych bordów 
                 print(self.player_two.board)
                 print(self.player_one)
                 return self.player_one
-            self.player_two.perform_hit(self.player_one)    # -||-
+            self.player_two.perform_hit(self.player_one)
             if self.check_if_lose(self.player_one):
-                # tu print sklejonych bordów                 
                 print(self.player_one.board)
                 print(self.player_two)
                 return self.player_two
@@ -58,9 +52,10 @@ class GameFlow():
                 self.play_mode = 2
                 return Human(self.choose_players_name())
             else:
-                print('Input must be a number from given scope.\n')        
+                print('Input must be a number from given scope.\n')
 
     def choose_players_name(self):
+        os.system('clear')
         name = ''
         while len(name) == 0:
             name = input("Choose players name: ").strip()
@@ -74,11 +69,11 @@ class GameFlow():
             print(element)
 
     def set_difficulty_lvl(self):   # podpiąć jak już sie zdecydujemy, czym się różnią poziomy
-        levels = ['1. Easy', '2. Medium', '3. Hard']
+        levels = ['\n1. Easy', '2. Medium', '3. Hard']
         self.print_list(levels)
 
         while True:
-            difficulty_lvl = input("Choose number of difficulty level: ").strip()
+            difficulty_lvl = input("\nChoose number of difficulty level: ").strip()
             if difficulty_lvl in ["1", "2", "3"]:
                 break
             else:

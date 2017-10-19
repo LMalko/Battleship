@@ -15,6 +15,7 @@ class Player():
     ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
     board_row_len = None  # Ocean object
+    game_message = [' ', ' ', ' ', ' ']
 
     def perform_hit(self, opponent):
         """
@@ -23,24 +24,33 @@ class Player():
         opponent: another Player object
         coordinates: list [x, y] (x, y: integers)
         """
-        #if isinstance(self, Human):
-        print(opponent.board)
+        os.system('clear')
+
+        self.display_message(opponent)
+
         if isinstance(self, Human):
+            print(opponent.board)
             print(self)
-        if isinstance(self, AI):
-            input("Press any key to make your move.")
+        # if isinstance(self, AI):
+        #     input("PRESS ANY KEY TO CONTINUE".center(self.board_row_len))
         coords = self.choose_attack_coordinates(opponent)
         x_coord = coords[0]
         y_coord = coords[1]
-        os.system('clear')
-        # opponent.board.fields[x_coord][y_coord].was_hit()   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
-        ship_message = opponent.board.fields[x_coord][y_coord].was_hit()   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
+
+        del self.game_message[0]
+        self.game_message.append(self.name + ' ' + opponent.board.fields[x_coord][y_coord].was_hit())   #gdyby zt tutuaj miss/hit/sunk możnaby printować info message z nazwą playera itp
         # if isinstance(self, Human):
-        separator = '-'*self.board_row_len
-        print(separator)
-        print(" | Game info: {} {}!".format(self.__class__.__name__, ship_message))
-        print(separator)
+
         
+    def display_message(self, opponent):
+        separator = '-'*self.board_row_len
+
+        print(separator)
+        for message in self.game_message:
+            print(" | Game info: {}".format(message))
+        print(separator[:int(len(separator)/2)])           
+        print(" | Game info: {} toure:".format(self.name))    
+        print(separator)
 
     def choose_ships_placement(self):
         """
@@ -77,7 +87,7 @@ class Human(Player):
 
         Returns coordinates in list [x, y]
         """
-        print(self.name + ", it's bombard time! Please specify attack coordinates:\n")
+        print('   ' +self.name + ", it's bombard time! \n   Please specify attack coordinates:\n")
         return self._input_and_check_coordinates()
 
     def _set_coordinates(self):
@@ -92,10 +102,7 @@ class Human(Player):
         Returns dict of ships placement coordinates.
         """
         all_ships_coordinates = {}
-        type_letter = "Please, specify X (choose letter between A - J): "
-        correct_letters = "ABCDEFGHIJ"
-        type_number = "Please, specify Y (choose number between 1 - 10): "
-        invalid_input_info = "invalid input."
+
         for ship in self.ships:
             Human.choose_ship_picture(ship)
             ship_coordinates = []
@@ -103,11 +110,12 @@ class Human(Player):
                 coordinate = self._input_and_check_coordinates()
                 ship_coordinates.append(coordinate)
                 print('\n')
-                # print(ship_coordinates)  # tmp
+     
+            all_ships_coordinates[ship.__name__] = ship_coordinates
+            os.system('clear')
             # BĘDZIE ZUPEŁNIE INACZEJ
             # metoda Michała - walidacja
-            all_ships_coordinates[ship.__name__] = ship_coordinates
-            # print(all_ships_coordinates)  # temporary
+            # # print(all_ships_coordinates)  # temporary
 
         return all_ships_coordinates
 
@@ -122,18 +130,16 @@ class Human(Player):
 
         Returns list of coordinates, eg. [5, 1]
         """
-        type_letter = "Please, specify X (choose letter between A - J): "
         correct_letters = "ABCDEFGHIJ"
-        type_number = "Please, specify Y (choose number between 1 - 10): "
         invalid_input_info = "invalid input."
         coordinate = []
         row_index = ""
         while not row_index or row_index not in correct_letters:
-            row_index = input(type_letter).upper()
+            row_index = input("      Please, specify row (A - J): ").upper()
         coordinate.append(correct_letters.index(row_index))
         while True:
             try:
-                column_index = int(input(type_number))
+                column_index = int(input("      Please, specify column (1 - 10): "))
                 if column_index in range(1, 11):
                     coordinate.append(column_index - 1)
                     break
