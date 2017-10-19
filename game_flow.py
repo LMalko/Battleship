@@ -43,10 +43,10 @@ class GameFlow():
         return False
 
     def choose_play_mode(self):
-        play_modes = ['Choose game mode:', ' 1. Singleplayer', ' 2. Multiplayer', ' 3. Quiz']
+        play_modes = ['\n  1. Singleplayer', '  2. Multiplayer', '  3. Quiz\n']
         while True:
             self.print_list(play_modes)
-            mode = input(" Pass mode number: ")
+            mode = input("  Choose game mode (pass the number): ")
             if mode == '1':
                 self.play_mode = 1
                 return AI(self.difficulty_lvl)
@@ -59,10 +59,9 @@ class GameFlow():
                 print('Input must be a number from given scope.\n')
 
     def choose_players_name(self):
-        os.system('clear')
         name = ''
-        while len(name) == 0:
-            name = input("Choose players name: ").strip()
+        while len(name) == 0 or len(name) > 15:
+            name = input("\n  Choose players name(max 15 chars): ").strip()
         os.system('clear')
 
         return name
@@ -73,11 +72,11 @@ class GameFlow():
             print(element)
 
     def set_difficulty_lvl(self):   # podpiąć jak już sie zdecydujemy, czym się różnią poziomy
-        levels = ['\n1. Easy', '2. Medium', '3. Hard']
+        levels = ['\n 1. Easy', ' 2. Medium', ' 3. Hard']
         self.print_list(levels)
 
         while True:
-            difficulty_lvl = input("\nChoose number of difficulty level: ").strip()
+            difficulty_lvl = input("\n  Choose number of difficulty level: ").strip()
             if difficulty_lvl in ["1", "2", "3"]:
                 break
             else:

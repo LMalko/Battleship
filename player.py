@@ -40,26 +40,24 @@ class Player():
 
 
     def display_game_message(self, opponent):
-        separator = '-'*self.board_row_len
+        """
+        Concatenates two lists rows into one string and prints it as a table.
+        Display box with game meggages (first list) and players ship inventory (second list)
 
-        players_navy = self.__str__().split('\n')
+        opponent: another Player object
+        """
+        separator = '-'*self.board_row_len
+        half_separator = '-'*int(self.board_row_len/2)
+        message_box = []
+        players_navy = self.__str__().split('\n')   #retusrn formatted string with players ship inventory
         separator_index = 0
 
-
-
-
-        message_box = []
         message_box.append(separator)
-        # print(separator)
         for message in self.game_message:
             message_box.append(" | Gameplay: {}".format(message).ljust(self.board_row_len))
-            # print(" | Gameplay: {}".format(message).ljust(self.board_row_len))
-        message_box.append(separator[:int(len(separator)/2)].ljust(self.board_row_len))
-        # print(separator[:int(len(separator)/2)])
+        message_box.append(half_separator.ljust(self.board_row_len))
         message_box.append(" | Game info: {} toure:".format(self.name).ljust(self.board_row_len))
-        # print(" | Game info: {} toure:".format(self.name))
         message_box.append(separator)
-        # print(separator)
 
         for index in range(len(message_box)):
             print(message_box[index], players_navy[index])
@@ -73,15 +71,10 @@ class Player():
         """
         self.my_ships = self._initialize_ship_coordinates()
 
-#    def fill_list_with_Square_obj(self):
-#        board_side_length = 10
-
-#        for empty_list in range(board_side_length):
-#            self.ocean_fields.append([])
-#            for single_element in range(board_side_length):
-#                self.ocean_fields[empty_list].append(Square())
-
     def _initialize_ocean_fields(self):
+        """
+
+        """
         board_side_length = 10
         self.ocean_fields = []
         for height in range(board_side_length):
@@ -90,15 +83,15 @@ class Player():
                 row.append(Square())
             self.ocean_fields.append(row)
 
+
 class Human(Player):
     """This is User-Player class."""
 
     def __init__(self, name):
         self.name = name
-        self.get_ships_placement()
+        self.get_ships_placement()  # gets ship
         self._initialize_ocean_fields()
-        #self.fill_list_with_Square_obj()
-        self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
+        self.board = Ocean(self.my_ships, self.ocean_fields)  # create players board
         board_bar_len = self.board.__str__().split('\n')
         Player.board_row_len = len(board_bar_len[0]) # ustawia długość belki do printów
 
@@ -184,14 +177,17 @@ class Human(Player):
     def __str__(self):
 
         navy_str = ''
-        tab_title = ' | ' + self.name + ' navy:\n'
-        separator = '-'*int(len(tab_title)) + '\n'
+        
+        title_bar = ' | ' + self.name + ' navy:'
+        separator = '-'*int(len(title_bar)) + '\n'
 
-        navy_str +=  separator + tab_title + separator
         for ship in self.board.my_navy:
-            navy_str += " | {}\n".format(ship)
+            formatted_str = " | {}".format(ship)
+            navy_str += formatted_str + '\n'
+            separator_len = int(len(formatted_str))
+        separator = '-'* separator_len + '\n'
 
-        return navy_str + separator
+        return separator + title_bar.ljust(separator_len) + '\n' + separator + navy_str + separator
 
 class AI(Player, ABrain):
     """This is AI-Player class."""

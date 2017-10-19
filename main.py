@@ -13,10 +13,9 @@ def delay_print(string):
         time.sleep(0.010)
 
 
-def main():
-    # Sets terminal width to 100 x 200.
-    sys.stdout.write("\x1b[8;100;200t")     
+def main():   
     os.system("clear")
+    sys.stdout.write("\x1b[8;100;200t")     # Sets terminal width to 100 x 200
 
     with open("story.md", "r", encoding="utf8") as myfile:
         for line in myfile:
@@ -38,7 +37,7 @@ def main():
     if winner.name == "AI":
         print("Computer wins, You die.")
     else:
-        print("\n\nZostałeś żeglarzem roku!")
+        print('\n\nYou achieved "World Sailor of the Year" title!\n')
         print("Your result,", winner.name, "is:", this_game.turn_count, "turns in", elapsed_time, "minutes.")
     this_game.init_hall_of_fame(str(this_game.turn_count), winner.name, elapsed_time)
     print("Press enter to continue.")

@@ -1,17 +1,23 @@
 
 class Ship():
-    """Abstract class represents Ships objects."""
 
     def decrement_hp(self):
         self.hit_points -= 1
 
     def __str__(self):
-        return self.__class__.__name__ + ", HP: " + '⛵ ' * self.hit_points + '✖ '*(self.max_hit_points - self.hit_points)# str(self.hit_points)
+        longest_ship_type_name_plus_margin = 15
+        ship_type = self.__class__.__name__.ljust(longest_ship_type_name_plus_margin)
+
+        not_hit_ship = '⛵ '*self.hit_points
+        hit_ship = '✖ '*(self.max_hit_points - self.hit_points)
+        navy_state = "| {}{}".format(not_hit_ship, hit_ship).ljust(longest_ship_type_name_plus_margin)
+
+        return ship_type + navy_state + '|'
 
 
 class Destroyer(Ship):
     max_hit_points = 2
-    
+
     def __init__(self):
         self.hit_points = self.max_hit_points
 
