@@ -36,7 +36,7 @@ def main():
     print("The winner is: ", winner.name)
     print("Zostałeś żeglarzem roku!")
     elapsed_time = str((time.time() - start_time) / 60).split(".")[0]
-    print("Your result,", winner.name, "is:", this_game.turn_count, "in", elapsed_time, "minutes.")
+    print("Your result,", winner.name, "is:", this_game.turn_count, "turns in", elapsed_time, "minutes.")
     this_game.init_hall_of_fame(str(this_game.turn_count), winner.name, elapsed_time)
     print("Press enter to continue.")
     getch_single_character()
