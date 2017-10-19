@@ -13,7 +13,25 @@ When YOU touche the structure, it knocks YOU away and generates a massive force 
 
 
 Under JERZY'S orders, YOU begin a game of battleship. 
+'''
+### Shape Class
+txt about
+#### Parent class
+Shape
+#### Attributes
+* `r`
+  * data: float
+  * description: circle radius length
+#### Instance methods
+##### ```get_area(self, shape)```
+Returns the area of the shape.
+...
+#### Class methods
+##### ```get_area_formula(cls)```
+Returns formula for the area of the shape as a string.
+...
 
+'''
 
 ## Specification
 
@@ -26,15 +44,55 @@ Creates GameFlow instance.
 	delay_print(string):None
 	main():None
 
-__game_flow.py__#
-class GameFlow()
 
-	Methods:
+__game_flow.py__#
+### GameFlow Class
+
+#### Attributes
+	    turn_count = 0
+		difficulty_lvl = 1
+		play_mode = ''
+        self.player_one = Player
+        self.player_two = Player
+
+#### Methods
+		def __init__(self): None
+		def fight(self): Player
+		def check_if_lose(self, player): Bool
+		def choose_play_mode(self):Player
+		def choose_players_name(self):string
+		def set_difficulty_lvl(self):none
+		def init_hall_of_fame(self, round_count, winner_name, time):none
+		def show_hall_of_fame(self):none
+	    def print_list(list):
+
 
 __abrain.py__#
 class ABrain()
+	Class atr:
+		turn_count = 0
+		difficulty_lvl = 1
+		play_mode = ''
+		intelligence = 1
+		should_search_horisontal = False
+		should_search_vertical = False
 
 	Methods:
+		def search_and_try_destroy(self, opponent):tuple
+		def __was_player_hit(self, x_coord, y_coord, opponent):Bool
+		def __check_new_coords(self, opponent):
+		def __check_coords_next_to(self, opponent):tuple
+		def __check_if_bother_last_accurate_coords(self, opponent): Bool
+		def __remember_used_coords(self, coords, checker):none
+		def __check_if_new_coords_in_board_and_not_in_memo(self, x_coord, y_coord):bool
+		def __search_horison_or_vert(self, x_coord, y_coord, opponent, mode="horisontal"):tuple
+		def __find_field_in_desperado_mode(self, opponent):tuple
+
+
+
+
+
+
 
 __ocean.py__#
 class Ocean()
