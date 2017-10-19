@@ -49,7 +49,7 @@ class ABrain():
         tries_modifier: (integer) higher means more tries for AI.
         Returns attack coordinates.
         """
-        tries_modifier = 2
+        tries_modifier = 1
         tries_number = self.intelligence * tries_modifier
         coords = (10, 10)  # starting tmp coords
         for tries in range(tries_number):
@@ -112,10 +112,10 @@ class ABrain():
         if self.last_accurate_coords:
             all_coords = list(self.ai_memo.keys())
             index = all_coords.index(self.last_accurate_coords)
-            acceptable_topicality = 3
+            acceptable_topicality = 4
             for ship in opponent.board.my_navy:
                 if ship.hit_points == 1:
-                    acceptable_topicality = 6
+                    acceptable_topicality = 7
                     break
 
             if index > len(all_coords) - acceptable_topicality:
