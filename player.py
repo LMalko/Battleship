@@ -13,11 +13,11 @@ import ship_generator
 
 class Player():
     """Abstract Player class."""
-    name = "Noname" #po cooooooo to tu?
+    # name = "Noname" #po cooooooo to tu?
     # Player's availible ships:
     # ships = [Destroyer, Submarine] #, Cruiser, Battleship, Carrier]
     my_ships = {}  # containts Player's created ships
-    board_row_len = None  # Ocean object
+    board_row_len = 0  # Ocean object
     game_message = [' ', ' ', ' ', ' ', ' ']
 
     def perform_hit(self, opponent):
@@ -149,11 +149,10 @@ class Human(Player):
                 if column_index in range(1, 11):
                     coordinate.append(column_index - 1)
                     break
-                else:
-                    print(invalid_input_info)
 
-            except:
-                print(invalid_input_info)
+            except ValueError:
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[K")
         return coordinate
 
 
