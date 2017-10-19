@@ -12,19 +12,25 @@ class Ocean():
         self.__set_ships_on_board()
 
     def __set_ships_on_board(self):
-        x_coordinant_index = 0
-        y_coordinant_index = 1
+        x_coordinate_index = 0
+        y_coordinate_index = 1
 
-        for ship_type in self.ship_coordinates_dict.keys():     # ship_type is a string
+        for ship_type in self.ship_coordinates_dict.keys():     # dla klucza = nazwie klasy w str
             ship_object = getattr(sys.modules[__name__], ship_type)()
             self.my_navy.append(ship_object)
-            for list_of_coordinants in self.ship_coordinates_dict.get(ship_type):
-                for coordinants in range(len(self.ship_coordinates_dict.get(ship_type))):
-                    x_coord = list_of_coordinants[x_coordinant_index]
-                    y_coord = list_of_coordinants[y_coordinant_index]
-                    self.ocean_fields[x_coord].pop(y_coord)
-                    self.ocean_fields[x_coord].insert(y_coord, Square(ship_object))
-
+#            for list_of_coordinates in self.ship_coordinates_dict.get(ship):   # lista w lista list ze współrzędnymi
+#                for point in range(len(self.ship_coordinates_dict.get(ship))):
+#                    x_coord = list_of_coordinants[0]    # współrzędna x
+#                    y_coord = list_of_coordinants[1]
+#                    self.ocean_fields[x_coord].pop(y_coord)    # wyczyść pozycję z pustego Square()
+#                    self.ocean_fields[x_coord].insert(y_coord, Square(ship_object))    # wstaw instancję Square zaimplementowaną konkretnym shipem
+            for coordinate_pair in self.ship_coordinates_dict[ship_type]:
+                x_coord = coordinate_pair[x_coordinate_index]
+                y_coord = coordinate_pair[y_coordinate_index]
+                # access the already initialized Square object
+                square_obj = self.ocean_fields[x_coord][y_coord]
+                # update its class object reference with that of our current ship object
+                square_obj.associated_class_obj = ship_object
 
     def __str__(self):
         first_row_index = 0
