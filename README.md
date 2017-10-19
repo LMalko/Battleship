@@ -89,7 +89,8 @@ __ship_position_picker.py__
 	get_predefined_color(color):dict
 	adjust_points_color(board, ship_points, start_end_coords, direction_key, directed_colors, used_area_points):None
 	lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, board_offset):None
-	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset, ship_length,     						   chosen_direction,used_area_points,possible_ship_directions):list
+	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset,ship_length
+		,chosen_direction,used_area_points,possible_ship_directions):list
 	colored_string(string, color):str
 	message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):str
 	handle_arrows(user_input, preferred_direction, possible_ship_directions):obj
