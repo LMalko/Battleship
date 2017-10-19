@@ -88,7 +88,7 @@ class Human(Player):
 
         Returns coordinates in list [x, y]
         """
-        print('   ' +self.name + ", it's bombard time! \n   Please specify attack coordinates:\n")
+        print('   ' + self.name + ", it's bombard time! \n   Please specify attack coordinates:\n")
         return self._input_and_check_coordinates()
 
     def _set_coordinates(self):
@@ -177,11 +177,12 @@ class Human(Player):
                 print(line)
 
     def __str__(self):
-        separator = '-'*Player.board_row_len + '\n'
-        navy_str = separator
-        tab_title = '   ' + self.name + ' navy:\n'
 
-        navy_str +=  tab_title + '-'*len(tab_title) + '\n'
+        navy_str = ''
+        tab_title = '   ' + self.name + ' navy:\n'
+        separator = '-'*int(len(tab_title)) + '\n'
+
+        navy_str +=  separator + tab_title + separator
         for ship in self.board.my_navy:
             navy_str += " - {}\n".format(ship)
 
