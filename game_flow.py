@@ -82,31 +82,27 @@ class GameFlow():
 
         self.difficulty_lvl = int(difficulty_lvl)
 
-    def init_hall_of_fame(self, filename):
+    def init_hall_of_fame(self, round_count, winner_name, time):
         ''' Writes to hall_of_fame file.'''
         with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
-            user_score = [player.name, square.hit_count]                        #do ustalenia
-            user_score = "        ".join(user_score)
-            HALL_OF_FAME.write(str(user_score) + "\n")
-            print("Wciśnij cokolwiek.")
-            input_char = getch()
+            user_stats = ['{:15.15}'.format(round_count),
+                          '{:15.15}'.format(winner_name),
+                          time]
+            user_stats = "        ".join(user_stats)
+            HALL_OF_FAME.write(str(user_stats) + "\n")
+            print("Your stats has been saved!\n\n")
 
-    def show_hall_of_fame(self, filename):
+    def show_hall_of_fame(self):
         ''' Reads from and prints hall_of_fame file.'''
         with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
             os.system("clear")
             print("\nHALL_OF_FAME:\n")
-            HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
+            print("ID     TURN COUNT             NAME                   TIME IN MINUTES\n\n")
+            HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=False)
             list_place = 1
-        for i in HALL_OF_FAME:
-            print('{:04d}'.format(list_place), ".", "".join(i))
+        for line in sorted(HALL_OF_FAME, key=lambda line: int(line.split()[0])):
+            print('{:04d}'.format(list_place), ".", "".join(line))
             list_place += 1
-            print("Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść.")
-            input_char = getch()
-            os.system("clear")
-            if input_char.upper() == "Y":
-                main()
-            sys.exit()
 
 
 # test_gameflow = GameFlow()
