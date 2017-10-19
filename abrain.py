@@ -33,7 +33,7 @@ class ABrain():
 
     def was_player_hit(self, x_coord, y_coord, opponent):
         """Check if opponent's ship was hit, returns bool."""
-        condition_1 = opponent.board.fields[x_coord][y_coord].hit_count == 0
+        condition_1 = opponent.board.fields[x_coord][y_coord].single_square_hit_count == 0
         condition_2 = opponent.board.fields[x_coord][y_coord].associated_class
         if condition_1 and condition_2:
             self.last_accurate_coords = (x_coord, y_coord)
@@ -49,23 +49,29 @@ class ABrain():
         tries_modifier: (integer) higher means more tries for AI.
         Returns attack coordinates.
         """
-        tries_modifier = 2
+        tries_modifier = 1
         tries_number = self.intelligence * tries_modifier
         coords = (10, 10)  # starting tmp coords
         for tries in range(tries_number):
-            for check in range(20):
+            for check in range(40):
                 x_coord = random.randint(0, 9)
                 y_coord = random.randint(0, 9)
                 if self.check_if_new_coords_in_board_and_not_in_memo(
                                                                     x_coord,
                                                                     y_coord):
+
                     break
             checker = self.was_player_hit(x_coord, y_coord, opponent)
             coords = (x_coord, y_coord)
             self.remember_used_coords(coords, checker)
             if checker:
                 return coords
-        return coords
+        # if can't find any unused field to attack:
+        if coords == (10, 10):
+            coords = self.find_field_in_desperado_mode(opponent)
+            return coords
+        else:
+            return coords
 
     def check_coords_next_to(self, opponent):
         """Check fields in neighborhood of last accurate shot."""
@@ -106,7 +112,7 @@ class ABrain():
         if self.last_accurate_coords:
             all_coords = list(self.ai_memo.keys())
             index = all_coords.index(self.last_accurate_coords)
-            acceptable_topicality = 4
+            acceptable_topicality = 3
             for ship in opponent.board.my_navy:
                 if ship.hit_points == 1:
                     acceptable_topicality = 6
@@ -174,3 +180,22 @@ class ABrain():
                 self.should_search_vertical = False
             coords = self.check_new_coords(opponent)
             return coords
+
+    def find_field_in_desperado_mode(self, opponent):
+        """Search for any field to attack. Iterate over all board."""
+        x_coord = 0
+        y_coord = 0
+        coords = (x_coord, y_coord)
+        for row in range(10):
+            for column in range(10):
+                if self.check_if_new_coords_in_board_and_not_in_memo(
+                                                                    x_coord,
+                                                                    y_coord):
+                    checker = self.was_player_hit(x_coord, y_coord, opponent)
+                    coords = (x_coord, y_coord)
+                    self.remember_used_coords(coords, checker)
+                    if checker:
+                        return coords
+                y_coord += 1
+            x_coord += 1
+        return coords
