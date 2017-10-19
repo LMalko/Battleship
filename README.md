@@ -39,90 +39,148 @@ __main.py__
 
 Creates GameFlow instance.
 
-	Functions:
+#### Functions
 
-	delay_print(string):None
-	main():None
+	delay_print(string): None
+	main(): None
 
 
 __game_flow.py__#
 ### GameFlow Class
 
 #### Attributes
-	    turn_count = 0
-		difficulty_lvl = 1
-		play_mode = ''
-        self.player_one = Player
-        self.player_two = Player
+
+	turn_count: Integer
+	difficulty_lvl: Integer
+	play_mode: String
+	player_one: Player
+	player_two: Player
 
 #### Methods
-		def __init__(self): None
-		def fight(self): Player
-		def check_if_lose(self, player): Bool
-		def choose_play_mode(self):Player
-		def choose_players_name(self):string
-		def set_difficulty_lvl(self):none
-		def init_hall_of_fame(self, round_count, winner_name, time):none
-		def show_hall_of_fame(self):none
-	    def print_list(list):
+
+	 __init__(): None
+	 fight(): Player
+	 check_if_lose(player): Bool
+	 choose_play_mode():Player
+	 choose_players_name():String
+	 set_difficulty_lvl():None
+	 init_hall_of_fame(round_count, winner_name, time):None
+	 show_hall_of_fame():None
+	 print_list(list):String
 
 
 __abrain.py__#
-class ABrain()
-	Class atr:
-		turn_count = 0
-		difficulty_lvl = 1
-		play_mode = ''
-		intelligence = 1
-		should_search_horisontal = False
-		should_search_vertical = False
+### ABrain() Class
 
-	Methods:
-		def search_and_try_destroy(self, opponent):tuple
-		def __was_player_hit(self, x_coord, y_coord, opponent):Bool
-		def __check_new_coords(self, opponent):
-		def __check_coords_next_to(self, opponent):tuple
-		def __check_if_bother_last_accurate_coords(self, opponent): Bool
-		def __remember_used_coords(self, coords, checker):none
-		def __check_if_new_coords_in_board_and_not_in_memo(self, x_coord, y_coord):bool
-		def __search_horison_or_vert(self, x_coord, y_coord, opponent, mode="horisontal"):tuple
-		def __find_field_in_desperado_mode(self, opponent):tuple
+#### Attributes
 
+	turn_count: Integer
+	difficulty_lvl: Integer
+	play_mode: String
+	intelligence: Integer
+	should_search_horisontal: Bool
+	should_search_vertical: Bool
 
+#### Methods
 
-
-
+	 search_and_try_destroy(opponent):Tuple
+	 __was_player_hit(x_coord, y_coord, opponent):Bool
+	 __check_new_coords(opponent):Tuple
+	 __check_coords_next_to(opponent):Tuple
+	 __check_if_bother_last_accurate_coords(opponent): Bool
+	 __remember_used_coords(coords, checker):None
+	 __check_if_new_coords_in_board_and_not_in_memo(x_coord, y_coord):Bool
+	 __search_horison_or_vert(x_coord, y_coord, opponent, mode="horisontal"):Tuple
+	 __find_field_in_desperado_mode(opponent):Tuple
 
 
 __ocean.py__#
-class Ocean()
+### Ocean() Class
 
-	Methods:
+#### Attributes
+
+        ship_coordinates_dict: Dictionary
+        ocean_fields: Ocean
+        my_navy: List
+
+#### Methods
+
+	 __init__(ship_coordinates_dict, ocean_fields): None
+     __set_ships_on_board(): None
+     __str__(): String
+
 
 __player.py__#
-class Player()
+###  Player Class
 
-	Methods:
+#### Attributes
 
-class Human(Player)
+	my_ships: Dictionary
+    board_row_len: Integer
+    game_message: List
 
-	Methods:
+#### Methods
 
-class AI(Player, AI)
+	 __init__(name):None
+     perform_hit(opponent):None
+     display_game_message(opponent):None
+     get_ships_placement():None
+     _initialize_ocean_fields():None
+     __str__():String
 
-	Methods:
+
+###  Human Class
+
+#### Parent class
+
+	Player
+
+#### Attributes
+
+	name: String
+	board: Ocean
+	board_bar_len: List
+
+#### Methods
+
+	 __init__(name):None
+     choose_attack_coordinates(opponent):List
+     _initialize_ship_coordinates():Dictionary
+     _input_and_check_coordinates():List
+
+
+
+###  AI Class
+
+#### Parent class
+
+	Player
+
+#### Attributes
+
+	name: String
+	board: Ocean
+	intelligence: Integer
+
+#### Methods
+
+     __init__(iq):None
+     _initialize_ship_coordinates():Dictionary
+     choose_attack_coordinates(opponent):List
+
 
 __quiz.py__
 
-	Functions:
+#### Functions
 
 	summary(correct_answers_count):None
 	quiz_flow(questions, answers):None
 	start():None
 
+
 __ship_generator.py__
 
-	Functions:
+#### Functions
 
 	__generate_board(width = 10, height = 10, fill_char = " "):list
 	does_ship_fit_within_board_boundaries(board, coords_pair):int
@@ -133,12 +191,13 @@ __ship_generator.py__
 	__print_board(board):None
 	main():None
 
+
 __ship_position_picker.py__
 
-	Functions:
+#### Functions
 
-	getch_single_character(): single character
-	getch_two_characters():	double character
+	getch_single_character():
+	getch_two_characters():
 	handle_origin_movement(board, direction, origin_char, origin_pos, old_origin_character):str
 	overwrite_board(left, right, coords):list
 	overlay_board(board, layer):list
@@ -147,8 +206,7 @@ __ship_position_picker.py__
 	get_predefined_color(color):dict
 	adjust_points_color(board, ship_points, start_end_coords, direction_key, directed_colors, used_area_points):None
 	lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, board_offset):None
-	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset,ship_length
-		,chosen_direction,used_area_points,possible_ship_directions):list
+	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset, ship_length,     						   chosen_direction,used_area_points,possible_ship_directions):list
 	colored_string(string, color):str
 	message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):str
 	handle_arrows(user_input, preferred_direction, possible_ship_directions):obj
@@ -159,56 +217,13 @@ __ship_position_picker.py__
 	get_ship_dictionary_from_user_input():None
 	main():None
 
-__ship.py__
-Creates 10 'ship' objects.
+__ship.py__#
 
-class Ship():
+Methods:
 
-	Methods:
-	
-	decrement_hp(self): None
-	__str__(self): str
+__square.py__#
 
-class Destroyer(Ship):
+Methods:
 
-	Methods:
-
-	__init__(self): None
-
-class Submarine(Ship):
-
-	Methods:
-
-	__init__(self): None
-
-class Cruiser(Ship):
-
-	Methods:
-
-	__init__(self): None
-
-class Battleship(Ship):
-
-	Methods:
-
-	__init__(self): None
-
-class Carrier(Ship):
-
-	Methods:
-
-	__init__(self): None
-
-
-__square.py__
-Creates 100 'square' objects.
-
-class Square():
-
-	Methods:
-
-	__init__(ship_instance=None): None
-	was_hit(): str
-	__str__(): str
 
 
