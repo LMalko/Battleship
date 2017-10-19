@@ -29,7 +29,7 @@ class GameFlow():
                 return self.player_one
             self.player_two.perform_hit(self.player_one)
             if self.check_if_lose(self.player_one):
-                self.player_two.display_game_message(self.player_two)
+                self.player_two.display_game_message(self.player_one)
                 print(self.player_one.board)
                 return self.player_two
 
