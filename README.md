@@ -21,18 +21,92 @@ __main.py__
 
 Creates GameFlow instance.
 
-Functions:
-	delay_print(string):
-	main():
+	Functions:
 
-__game_flow.py__
-__abrain.py__
-__battleship.py__
-__ocean.py__
-__player.py__
+	delay_print(string):None
+	main():None
+
+__game_flow.py__#
+class GameFlow()
+
+	Methods:
+
+__abrain.py__#
+class ABrain()
+
+	Methods:
+
+__ocean.py__#
+class Ocean()
+
+	Methods:
+
+__player.py__#
+class Player()
+
+	Methods:
+
+class Human(Player)
+
+	Methods:
+
+class AI(Player, AI)
+
+	Methods:
+
 __quiz.py__
+
+	Functions:
+
+	summary(correct_answers_count):None
+	quiz_flow(questions, answers):None
+	start():None
+
 __ship_generator.py__
+
+	Functions:
+
+	__generate_board(width = 10, height = 10, fill_char = " "):list
+	does_ship_fit_within_board_boundaries(board, coords_pair):int
+	is_ship_at_or_beside_another(used_area_points, ship_points_to_be_tested):bool
+	__evaluate_start_end_coords_into_point_list(coords_pair):list
+	__get_ship_types():dict
+	generate_ship_coords(board, internal_testing = False):dict
+	__print_board(board):None
+	main():None
+
 __ship_position_picker.py__
-__ship.py__
-__square.py__
+
+	Functions:
+
+	getch_single_character():
+	getch_two_characters():
+	handle_origin_movement(board, direction, origin_char, origin_pos, old_origin_character):str
+	overwrite_board(left, right, coords):list
+	overlay_board(board, layer):list
+	bind_maps_horz(left, right):list
+	set_message(msg_board, message):None
+	get_predefined_color(color):dict
+	adjust_points_color(board, ship_points, start_end_coords, direction_key, directed_colors, used_area_points):None
+	lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, board_offset):None
+	get_painted_layer_with_ghost_ships(board, sandbox, origin_coords, board_offset, ship_length,     						   chosen_direction,used_area_points,possible_ship_directions):list
+	colored_string(string, color):str
+	message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):str
+	handle_arrows(user_input, preferred_direction, possible_ship_directions):obj
+	handle_tab(ship_keys_ordered, ship_types, current_ship_type_index):str
+	handle_enter(board,preferred_direction,possible_ship_directions,ship_types,ship_keys_ordered,used_area_points,
+    		     current_ship_type_index,created_ships,old_origin_character):str
+	draw_sandbox_row_col_marks(sandbox, board_offset):None
+	get_ship_dictionary_from_user_input():None
+	main():None
+
+__ship.py__#
+
+Methods:
+
+__square.py__#
+
+Methods:
+
+
 
