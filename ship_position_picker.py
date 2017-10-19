@@ -288,10 +288,10 @@ def colored_string(string, color):
 def message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):
     if possible_ship_directions[preferred_direction[0]][0]:
         # The ship can be placed.
-        return colored_string("You can set ship here.", "green")
+        return colored_string("You can set ship here.", "green") \
         + "\n\n Press Enter to save the ship\n at this position."
     else:
-        return colored_string("You can't set ship here.", "lightred")
+        return colored_string("You can't set ship here.", "lightred") \
         + "\n\n Change direction using arrows\n or move origin with WSAD somewhere else."
 
 
