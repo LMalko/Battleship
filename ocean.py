@@ -5,19 +5,19 @@ import sys
 
 class Ocean():
 
-    def __init__(self, coordinates_dictionary, ocean_fields):
-        self.coordinates_dictionary = coordinates_dictionary
+    def __init__(self, ship_coordinates_dict, ocean_fields):
+        self.ship_coordinates_dict = ship_coordinates_dict
         self.ocean_fields = ocean_fields
         self.my_navy = []   # list of refs to players ship objects
         self.__set_ships_on_board()
 
     def __set_ships_on_board(self):
 
-        for ship in self.coordinates_dictionary.keys():     # dla klucza = nazwie klasy w str
+        for ship in self.ship_coordinates_dict.keys():     # dla klucza = nazwie klasy w str
             ship_object = getattr(sys.modules[__name__], ship)()
             self.my_navy.append(ship_object)
-            for list_of_coordinants in self.coordinates_dictionary.get(ship):   # lista w lista list ze współrzędnymi
-                for coordinants in range(len(self.coordinates_dictionary.get(ship))):
+            for list_of_coordinants in self.ship_coordinates_dict.get(ship):   # lista w lista list ze współrzędnymi
+                for coordinants in range(len(self.ship_coordinates_dict.get(ship))):
                     x_coord = list_of_coordinants[0]    # współrzędna x
                     y_coord = list_of_coordinants[1]
                     self.ocean_fields[x_coord].pop(y_coord)    # wyczyść pozycję z pustego Square()
