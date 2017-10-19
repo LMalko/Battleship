@@ -325,10 +325,15 @@ def handle_enter(
         # the preferred direction is viable
         ship_points = possible_ship_directions[preferred_direction[0]][1]
         current_ship_type = ship_keys_ordered[current_ship_type_index[0]]
-        created_ships[current_ship_type] = ship_points
         # add points to used/ disallowed-for-further-use area
         for pt in ship_points:
             used_area_points.append(pt)
+
+        coords_transposed = []
+        # create a list of `transposed` coordinates
+        for i in range(len(ship_points)):
+            coords_transposed.append([ship_points[i][1], ship_points[i][0]])
+        created_ships[current_ship_type] = coords_transposed
 
         # mark the chosen ship on board
         used_area_fill_block = colored_string(u"\u2593", "orange")
