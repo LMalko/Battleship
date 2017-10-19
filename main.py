@@ -5,23 +5,23 @@ from game_flow import *
 from ship_position_picker import getch_single_character
 
 
-def delay_print(s):
+def delay_print(string):
     """ Delays printing. """
-    for c in s:
-        sys.stdout.write("%s" % c)
+    for character in string:
+        sys.stdout.write("%s" % character)
         sys.stdout.flush()
         time.sleep(0.010)
 
 
-def main():
+def main():   
     os.system("clear")
-    sys.stdout.write("\x1b[8;100;200t")     # sets terminal width to 100 x 200
+    sys.stdout.write("\x1b[8;100;200t")     # Sets terminal width to 100 x 200
 
-    #with open("story.md", "r", encoding="utf8") as myfile:
-        #for line in myfile:
-            #delay_print(line)
-        #getch_single_character()
-        #os.system("clear")
+    with open("story.md", "r", encoding="utf8") as myfile:
+        for line in myfile:
+            delay_print(line)
+        getch_single_character()
+        os.system("clear")
 
     with open("battleship.md", "r", encoding="utf8") as myfile:
         myfile = myfile.read().splitlines() 
