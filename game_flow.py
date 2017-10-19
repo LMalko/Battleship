@@ -24,13 +24,13 @@ class GameFlow():
             self.turn_count += 1
             self.player_one.perform_hit(self.player_two)
             if self.check_if_lose(self.player_two):
+                self.player_one.display_message()
                 print(self.player_two.board)
-                print(self.player_one)
                 return self.player_one
             self.player_two.perform_hit(self.player_one)
             if self.check_if_lose(self.player_one):
+                self.player_two.display_message()
                 print(self.player_one.board)
-                print(self.player_two)
                 return self.player_two
 
     def check_if_lose(self, player):

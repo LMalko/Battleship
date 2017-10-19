@@ -4,7 +4,7 @@ import os
 
 class Square():
 
-    def __init__(self, ship_instance = None):
+    def __init__(self, ship_instance=None):
 
         self.associated_class_obj = ship_instance
         self.single_square_hit_count = 0

@@ -8,43 +8,43 @@ class Ocean():
     def __init__(self, ship_coordinates_dict, ocean_fields):
         self.ship_coordinates_dict = ship_coordinates_dict
         self.ocean_fields = ocean_fields
-        self.my_navy = []   # list of refs to players ship objects
+        self.my_navy = []   # list of references to players ship objects
         self.__set_ships_on_board()
 
     def __set_ships_on_board(self):
+        x_coordinant_index = 0
+        y_coordinant_index = 1
 
-        for ship in self.ship_coordinates_dict.keys():     # dla klucza = nazwie klasy w str
-            ship_object = getattr(sys.modules[__name__], ship)()
+        for ship_type in self.ship_coordinates_dict.keys():     # ship_type is a string
+            ship_object = getattr(sys.modules[__name__], ship_type)()
             self.my_navy.append(ship_object)
-            for list_of_coordinants in self.ship_coordinates_dict.get(ship):   # lista w lista list ze współrzędnymi
-                for coordinants in range(len(self.ship_coordinates_dict.get(ship))):
-                    x_coord = list_of_coordinants[0]    # współrzędna x
-                    y_coord = list_of_coordinants[1]
-                    self.ocean_fields[x_coord].pop(y_coord)    # wyczyść pozycję z pustego Square()
-                    self.ocean_fields[x_coord].insert(y_coord, Square(ship_object))    # wstaw instancję Square zaimplementowaną konkretnym shipem
+            for list_of_coordinants in self.ship_coordinates_dict.get(ship_type):
+                for coordinants in range(len(self.ship_coordinates_dict.get(ship_type))):
+                    x_coord = list_of_coordinants[x_coordinant_index]
+                    y_coord = list_of_coordinants[y_coordinant_index]
+                    self.ocean_fields[x_coord].pop(y_coord)
+                    self.ocean_fields[x_coord].insert(y_coord, Square(ship_object))
 
 
     def __str__(self):
+        first_row_index = 0
 
-        alfabet = "ABCDEFGHIJ"
-        # title_bar = ' |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  | 10 '
-
+        side_bar_elements = "ABCDEFGHIJ"
         title_bar = ' '
-        for element in range(len(self.ocean_fields[0])):  # magic
-            if element + 1 < 10:  # magic
-                title_bar += '|  {}  '.format(element+1)  # magic
-            else:
-                title_bar += '|  {} '.format(element+1)    # magic
+        for element in range(len(self.ocean_fields[first_row_index])):
+            if element + 1 < 10:    # if element is composed of less than two numbers
+                title_bar += '|  {}  '.format(element+1)  # increment index by one to start from 1 not from 0
+            else:                   # if element is composed of more than two numbers
+                title_bar += '|  {} '.format(element+1)   # increment index by one to start from 1 not from 0
 
         separator = '-'*len(title_bar) + '\n'
-
-        super_str = ''
+        super_str = ''  # ;)
         super_str += title_bar + '\n' + separator
 
-        for lists in range(len(self.ocean_fields)):
-            super_str += alfabet[lists]
-            for element in range(len(self.ocean_fields[lists])):
-                super_str += "|  {}  ".format(self.ocean_fields[lists][element].__str__())
+        for row_index in range(len(self.ocean_fields)):
+            super_str += side_bar_elements[row_index]
+            for column_index in range(len(self.ocean_fields[row_index])):
+                super_str += "|  {}  ".format(self.ocean_fields[row_index][column_index].__str__())
             super_str += '\n'
             super_str += separator
 
