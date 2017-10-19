@@ -34,7 +34,7 @@ class ABrain():
     def __was_player_hit(self, x_coord, y_coord, opponent):
         """Check if opponent's ship was hit, returns bool."""
         condition_1 = opponent.board.ocean_fields[x_coord][y_coord].single_square_hit_count == 0
-        condition_2 = opponent.board.ocean_fields[x_coord][y_coord].associated_class
+        condition_2 = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
         if condition_1 and condition_2:
             self.last_accurate_coords = (x_coord, y_coord)
             return True
