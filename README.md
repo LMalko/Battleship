@@ -79,8 +79,8 @@ __ship_position_picker.py__
 
 	Functions:
 
-	getch_single_character():
-	getch_two_characters():
+	getch_single_character(): single character
+	getch_two_characters():	double character
 	handle_origin_movement(board, direction, origin_char, origin_pos, old_origin_character):str
 	overwrite_board(left, right, coords):list
 	overlay_board(board, layer):list
@@ -100,13 +100,56 @@ __ship_position_picker.py__
 	get_ship_dictionary_from_user_input():None
 	main():None
 
-__ship.py__#
+__ship.py__
+Creates 10 'ship' objects.
 
-Methods:
+class Ship():
 
-__square.py__#
+	Methods:
+	
+	decrement_hp(self): None
+	__str__(self): str
 
-Methods:
+class Destroyer(Ship):
 
+	Methods:
+
+	__init__(self): None
+
+class Submarine(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+class Cruiser(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+class Battleship(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+class Carrier(Ship):
+
+	Methods:
+
+	__init__(self): None
+
+
+__square.py__
+Creates 100 'square' objects.
+
+class Square():
+
+	Methods:
+
+	__init__(ship_instance=None): None
+	was_hit(): str
+	__str__(): str
 
 
