@@ -28,11 +28,15 @@ def main():
             print(line)
     input("")
     os.system('clear')
+    start_time = time.time()
     this_game = GameFlow()
     # print("---------->", Player.board)
     winner = this_game.fight()
     print("The winner is: ", winner.name)
     print("Zostałeś żeglarzem roku!")
+    elapsed_time = (time.time() - start_time) / 60
+    this_game.init_hall_of_fame(str(this_game.turn_count), winner.name, str(elapsed_time).split(".")[0])
+    this_game.show_hall_of_fame()
 
 
 if __name__ == "__main__":
