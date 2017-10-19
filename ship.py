@@ -12,7 +12,7 @@ class Ship():
         hit_ship = '✖ '*(self.max_hit_points - self.hit_points)
         navy_state = "| {}{}".format(not_hit_ship, hit_ship).ljust(longest_ship_type_name_plus_margin)
 
-        return ship_type + navy_state + '|'
+        return ship_type + navy_state
 
 
 class Destroyer(Ship):

@@ -82,6 +82,7 @@ class Player():
             formatted_str = " | {}".format(ship)
             navy_str += formatted_str + '\n'
             separator_len = int(len(formatted_str))
+            
         separator = '-' * separator_len + '\n'
 
         return separator + title_bar.ljust(separator_len) + '\n' + separator + navy_str + separator
