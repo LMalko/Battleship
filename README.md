@@ -13,27 +13,11 @@ When YOU touche the structure, it knocks YOU away and generates a massive force 
 
 
 Under JERZY'S orders, YOU begin a game of battleship. 
-'''
-### Shape Class
-txt about
-#### Parent class
-Shape
-#### Attributes
-* `r`
-  * data: float
-  * description: circle radius length
-#### Instance methods
-##### ```get_area(self, shape)```
-Returns the area of the shape.
-...
-#### Class methods
-##### ```get_area_formula(cls)```
-Returns formula for the area of the shape as a string.
-...
 
-'''
 
-## Specification
+
+
+# Specification
 
 __main.py__
 
@@ -45,7 +29,7 @@ Creates GameFlow instance.
 	main(): None
 
 
-__game_flow.py__#
+__game_flow.py__
 ### GameFlow Class
 
 #### Attributes
@@ -69,7 +53,7 @@ __game_flow.py__#
 	 print_list(list):String
 
 
-__abrain.py__#
+__abrain.py__
 ### ABrain() Class
 
 #### Attributes
@@ -94,7 +78,7 @@ __abrain.py__#
 	 __find_field_in_desperado_mode(opponent):Tuple
 
 
-__ocean.py__#
+__ocean.py__
 ### Ocean() Class
 
 #### Attributes
@@ -110,7 +94,7 @@ __ocean.py__#
      __str__(): String
 
 
-__player.py__#
+__player.py__
 ###  Player Class
 
 #### Attributes
@@ -170,7 +154,6 @@ __player.py__#
 
 
 __quiz.py__
-
 #### Functions
 
 	summary(correct_answers_count):None
@@ -179,7 +162,6 @@ __quiz.py__
 
 
 __ship_generator.py__
-
 #### Functions
 
 	__generate_board(width = 10, height = 10, fill_char = " "):list
@@ -193,7 +175,6 @@ __ship_generator.py__
 
 
 __ship_position_picker.py__
-
 #### Functions
 
 	getch_single_character():
