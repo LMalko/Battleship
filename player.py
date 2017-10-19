@@ -1,9 +1,8 @@
-
 import random
 from ocean import Ocean
 from ship import Destroyer, Submarine, Cruiser, Battleship, Carrier
 from square import Square
-from abrain import ABrain  # new AI abstract class
+from abrain import ABrain
 from ship_position_picker import get_ship_dictionary_from_user_input
 import os
 import sys
@@ -11,17 +10,15 @@ import ship_generator
 
 
 class Player():
-    my_ships = {}  # containts Player's created ships
-    board_row_len = 0  # length of title bar of players ocean-board
-    game_message = [' ', ' ', ' ', ' ', ' ']  # empty message box, will be filled druing game
+    # Containts Player's created ships.
+    my_ships = {}
+    # Length of title bar of players ocean-board.
+    board_row_len = 0
+    # Empty message box, will be filled druing game.
+    game_message = [' ', ' ', ' ', ' ', ' ']
 
     def perform_hit(self, opponent):
-        """
-        Execute attack to chosen quater in opponent board.
-
-        opponent: another Player object
-        coordinates: list [x, y] (x, y: integers)
-        """
+        """ Executes attack to chosen quater in opponent board. """
         os.system('clear')
         self.display_game_message(opponent)
         if isinstance(self, Human):
@@ -33,9 +30,10 @@ class Player():
         x_coord = coordinants[x_coord_index]
         y_coord = coordinants[y_coord_index]
 
-        del self.game_message[0]    # delate the oldest message in message box
+        # Delate the oldest message in message box.
+        del self.game_message[0]
+        # Add new message to the message box.
         self.game_message.append(self.name + ' ' + opponent.board.ocean_fields[x_coord][y_coord].was_hit())
-        # add new message to the message box
 
     def display_game_message(self, opponent):
         """
@@ -47,7 +45,8 @@ class Player():
         separator = '-'*self.board_row_len
         half_separator = '-'*int(self.board_row_len/2)
         message_box = []
-        players_navy = self.__str__().split('\n')   # retusrn formatted string with players ship inventory
+        # Return formatted string with players ship inventory.
+        players_navy = self.__str__().split('\n')
         separator_index = 0
 
         message_box.append(separator)
@@ -61,18 +60,10 @@ class Player():
             print(message_box[index], players_navy[index])
 
     def get_ships_placement(self):
-        """
-        Choose ships placement (coordinates) by Player.
-
-        Returns dict with ship coordinates, eg.
-        {"Destroyer": [[0, 0], [0, 1], "Submarine": ...}
-        """
+        """ Returns dict with ship coordinates. """
         self.my_ships = self._initialize_ship_coordinates()
 
     def _initialize_ocean_fields(self):
-        """
-
-        """
         board_side_length = 10
         self.ocean_fields = []
         for height in range(board_side_length):
@@ -101,53 +92,36 @@ class Human(Player):
 
     def __init__(self, name):
         self.name = name
-        self.get_ships_placement()  # gets ship
+        # Gets ship.
+        self.get_ships_placement()
         self._initialize_ocean_fields()
-        self.board = Ocean(self.my_ships, self.ocean_fields)  # create players board
+        # Create players board.
+        self.board = Ocean(self.my_ships, self.ocean_fields)
         board_bar_len = self.board.__str__().split('\n')
-        Player.board_row_len = len(board_bar_len[0])    # ustawia długość belki do printów
+        # Ustawia długość belki do printów.
+        Player.board_row_len = len(board_bar_len[0])
 
     def choose_attack_coordinates(self, opponent):
-        """
-        Choose attack (coordinates) by Player.
-
-        Returns coordinates in list [x, y]
-        """
+        """ Returns coordinates in list [x, y]."""
         print('   ' + self.name + ", it's bombard time! \n   Please specify attack coordinates:\n")
         return self._input_and_check_coordinates()
 
     def _initialize_ship_coordinates(self):
-        """
-        Input coordinates by User (format: A1, B1, etc..).
-
-        Check if input is correct.
-        Transform Player's coordinates to right indexing form.
-        Get inputed x, y coordinates (format: [A, 1], [A, 2]).
-        Tranform to format [0, 0] to use for correct indexing.
-
-        Returns dict of ships placement coordinates.
-        """
+        """ Returns dict of ships placement coordinates. """
         return get_ship_dictionary_from_user_input()
 
     def _input_and_check_coordinates(self):
-        """
-        Take coordinates from Player.
-
-        Check if input is correct.
-        Transform Player's coordinates to right indexing form.
-        Get inputed x, y coordinates (format: [A, 1], [A, 2]).
-        Tranform to format [0, 0] to use for correct indexing.
-
-        Returns list of coordinates, eg. [5, 1]
-        """
+        """ Returns list of coordinates. """
         correct_letters = "ABCDEFGHIJ"
         invalid_input_info = "invalid input."
         coordinate = []
         row_index = ""
         while not row_index or row_index not in correct_letters:
             row_index = input("      Please, specify row (A - J): ").upper()
-            sys.stdout.write("\033[F")  # goes one line up
-            sys.stdout.write("\033[K")  # clears the line
+            # Goes one line up.
+            sys.stdout.write("\033[F")
+            # Clears the line.
+            sys.stdout.write("\033[K")
         coordinate.append(correct_letters.index(row_index))
         while True:
             try:
@@ -173,23 +147,14 @@ class AI(Player, ABrain):
         self.ocean_fields = []
         self._initialize_ocean_fields()
         self.get_ships_placement()
-        self.board = Ocean(self.my_ships, self.ocean_fields)  # create board
+        # Create board.
+        self.board = Ocean(self.my_ships, self.ocean_fields)
         self.intelligence = iq
 
     def _initialize_ship_coordinates(self):
-        """
-        AI generate ships placement (coordinates).
-
-        Returns dict of ships placement coordinates.
-        """
+        """ AI generate ships placement (coordinates). Returns dict of ships placement coordinates. """
         return ship_generator.generate_ship_coords(self.ocean_fields)
 
     def choose_attack_coordinates(self, opponent):
-        """
-        Choose attack (coordinates) by AI.
-
-        Returns coordinates in list [x, y].
-        """
+        """ Choose attack (coordinates) by AI. Returns coordinates in list [x, y]."""
         return self.search_and_try_destroy(opponent)
-
-

@@ -4,6 +4,7 @@ import tty
 import termios
 import ship_generator
 
+
 def getch_single_character():
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
@@ -25,27 +26,27 @@ def getch_two_characters():
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
 
-# here, `origin` means a `beginning`, and has nothing to do with `original`
+
 def handle_origin_movement(
-    board,
-    direction,
-    origin_char,
-    origin_pos,
-    old_origin_character
-    ):
+        board,
+        direction,
+        origin_char,
+        origin_pos,
+        old_origin_character
+        ):
     dx = 0
     dy = 0
     if direction == "w":
-        # up, decrement y
+        # Up, decrement y.
         dy = -1
     elif direction == "s":
-        # down, increment y
+        # Down, increment y.
         dy = 1
     elif direction == "a":
-        # left, decrement x
+        # Left, decrement x.
         dx = -1
     elif direction == "d":
-        # right, increment x
+        # Right, increment x.
         dx = 1
 
     x_new = origin_pos[0] + dx
@@ -56,24 +57,22 @@ def handle_origin_movement(
         0 <= y_new < len(board) and \
         0 <= x_new < len(board[y_new])
 
-
     if not is_new_pos_within_board:
         return "Prevented from going out of bounds..."
-    else:  # perform the move
-        # restore previous character to old position
+    else:  # Perform the move restore previous character to old position.
         board[origin_pos[1]][origin_pos[0]] = old_origin_character[0]
-        # save character to be stepped at for restoration
+        # Save character to be stepped at for restoration.
         old_origin_character[0] = board[new_pos[1]][new_pos[0]]
-        # move/ `draw` origin character in new pos
+        # Move/ `draw` origin character in new pos.
         board[new_pos[1]][new_pos[0]] = origin_char
-        # update char_pos to the outside world
+        # Update char_pos to the outside world.
         origin_pos[0] = x_new
         origin_pos[1] = y_new
         return ""
 
 
-# writes right board on top of left, starting at coords
 def overwrite_board(left, right, coords):
+    ''' Writes right board on top of left, starting at coords.'''
     x_begin = coords[0]
     y_begin = coords[1]
     for dy in range(len(right)):
@@ -103,8 +102,8 @@ def overlay_board(board, layer):
     return layered_board
 
 
-# returns a bound map of 2 maps in horizontal orientation
 def bind_maps_horz(left, right):
+    ''' Returns a bound map of 2 maps in horizontal orientation.'''
     left_indent = [" "] * len(left[0])
     bound = []
     if len(right) > len(left):
@@ -124,7 +123,7 @@ def bind_maps_horz(left, right):
 
 
 def set_message(msg_board, message):
-    # wipe message board
+    # Wipe message board.
     for y in range(len(msg_board)):
         for x in range(len(msg_board[y])):
             msg_board[y][x] = " "
@@ -133,7 +132,8 @@ def set_message(msg_board, message):
         input_idx = 0
         output_idx = 0
         while input_idx < len(subline):
-            if subline[input_idx] == "\x1b": # escape sequence begin?
+            # Escape sequence begin?
+            if subline[input_idx] == "\x1b":
                 # take escape + 2 next characters => color
                 color_seq = subline[input_idx:input_idx+5] + " "
                 msg_board[i+1][output_idx] = color_seq
@@ -143,6 +143,7 @@ def set_message(msg_board, message):
                 input_idx += 1
 
             output_idx += 1
+
 
 def get_predefined_color(color):
     colors = {
@@ -191,22 +192,23 @@ def lay_ghost_points(layer, points, fill_char, direction_key, directed_colors, b
 # sandbox is an extended board with board drawn at the center, it is used to demonstrate
 # how a would-be ship would look like if it were placed on board
 def get_painted_layer_with_ghost_ships(
-    board,
-    sandbox,
-    origin_coords,
-    board_offset,
-    ship_length,
-    chosen_direction,
-    used_area_points,
-    possible_ship_directions
-    ):
+        board,
+        sandbox,
+        origin_coords,
+        board_offset,
+        ship_length,
+        chosen_direction,
+        used_area_points,
+        possible_ship_directions
+        ):
     blurred_solid_block = u"\u2591"
     solid_solid_block = u"\u2593"
     solid_sequence_length = 0
     if ship_length is not None:
-        solid_sequence_length = ship_length - 1 # we don't count in the origin, hence the decrement
+        # We don't count in the origin, hence the decrement.
+        solid_sequence_length = ship_length - 1
 
-    # create an empty layer
+    # Create an empty layer.
     layer = []
     for y in range(len(sandbox)):
         row = []
@@ -214,20 +216,20 @@ def get_painted_layer_with_ghost_ships(
             row.append(None)
         layer.append(row)
 
-    # don't generate ghost ships if there are no more ships
+    # Don't generate ghost ships if there are no more ships.
     if solid_sequence_length == 0:
         return layer
 
     preferred_direction = chosen_direction[0]
     x = origin_coords[0]
     y = origin_coords[1]
-    # create coordinate pairs of ghost/ would-be ships
-    west_option = [ [ x - solid_sequence_length, y ], [x - 1, y] ]
-    east_option = [ [ x + 1, y ], [x + solid_sequence_length, y] ]
-    north_option = [ [x, y - solid_sequence_length], [x, y - 1]  ]
-    south_option = [ [ x, y + 1 ], [x, y + solid_sequence_length] ]
+    # Create coordinate pairs of ghost/ would-be ships.
+    west_option = [[x - solid_sequence_length, y], [x - 1, y]]
+    east_option = [[x + 1, y], [x + solid_sequence_length, y]]
+    north_option = [[x, y - solid_sequence_length], [x, y - 1]]
+    south_option = [[x, y + 1], [x, y + solid_sequence_length]]
 
-    # evaluate start-end coordinate pairs into point collections
+    # Evaluate start-end coordinate pairs into point collections.
     west_points = ship_generator.__evaluate_start_end_coords_into_point_list(west_option)
     east_points = ship_generator.__evaluate_start_end_coords_into_point_list(east_option)
     north_points = ship_generator.__evaluate_start_end_coords_into_point_list(north_option)
@@ -235,17 +237,17 @@ def get_painted_layer_with_ghost_ships(
 
     red = get_predefined_color("lightred")
     green = get_predefined_color("green")
-    # assume all possibilities `red`, i.e. disallowed
-    directed_colors = {"West":red, "East":red, "North":red, "South":red}
+    # Assume all possibilities `red`, i.e. disallowed.
+    directed_colors = {"West": red, "East": red, "North": red, "South": red}
 
-    # adjust_points_color sets direction color to green if these two conditions are met:
-    #  all ship points lie within board boundaries
-    #  none of ship points are at or directly beside any others' points
+    # Adjust_points_color sets direction color to green if these two conditions are met:
+    # All ship points lie within board boundaries.
+    # None of ship points are at or directly beside any others' points.
     adjust_points_color(board, west_points, west_option, "West", directed_colors, used_area_points)
     adjust_points_color(board, east_points, east_option, "East", directed_colors, used_area_points)
     adjust_points_color(board, north_points, north_option, "North", directed_colors, used_area_points)
     adjust_points_color(board, south_points, south_option, "South", directed_colors, used_area_points)
-    # put the points onto the layer
+    # Put the points onto the layer.
     fill_block = solid_solid_block if preferred_direction == "left" else blurred_solid_block
     lay_ghost_points(layer, west_points, fill_block, "West", directed_colors, board_offset)
 
@@ -258,23 +260,23 @@ def get_painted_layer_with_ghost_ships(
     fill_block = solid_solid_block if preferred_direction == "down" else blurred_solid_block
     lay_ghost_points(layer, south_points, fill_block, "South", directed_colors, board_offset)
 
-    # update possible_ships_dict
-    # adjust start-end ghost ship coordinates to include origin
+    # Update possible_ships_dict.
+    # Adjust start-end ghost ship coordinates to include origin.
     west_option[1] = origin_coords
     east_option[0] = origin_coords
     north_option[1] = origin_coords
     south_option[0] = origin_coords
 
-    # re-generate points to include origin
+    # Re-generate points to include origin.
     west_points = ship_generator.__evaluate_start_end_coords_into_point_list(west_option)
     east_points = ship_generator.__evaluate_start_end_coords_into_point_list(east_option)
     north_points = ship_generator.__evaluate_start_end_coords_into_point_list(north_option)
     south_points = ship_generator.__evaluate_start_end_coords_into_point_list(south_option)
 
-    possible_ship_directions["left"] = [ False if directed_colors["West"] == red else True, west_points ]
-    possible_ship_directions["right"] = [ False if directed_colors["East"] == red else True, east_points ]
-    possible_ship_directions["up"] = [ False if directed_colors["North"] == red else True, north_points ]
-    possible_ship_directions["down"] = [ False if directed_colors["South"] == red else True, south_points ]
+    possible_ship_directions["left"] = [False if directed_colors["West"] == red else True, west_points]
+    possible_ship_directions["right"] = [False if directed_colors["East"] == red else True, east_points]
+    possible_ship_directions["up"] = [False if directed_colors["North"] == red else True, north_points]
+    possible_ship_directions["down"] = [False if directed_colors["South"] == red else True, south_points]
 
     return layer
 
@@ -284,11 +286,14 @@ def colored_string(string, color):
 
 
 def message_is_possible_to_place_ship(preferred_direction, possible_ship_directions):
-    if possible_ship_directions[preferred_direction[0]][0] == True:
-        # the ship can be placed
-        return colored_string("You can set ship here.", "green") + "\n\n Press Enter to save the ship\n at this position."
+    if possible_ship_directions[preferred_direction[0]][0]:
+        # The ship can be placed.
+        return colored_string("You can set ship here.", "green")
+        + "\n\n Press Enter to save the ship\n at this position."
     else:
-        return colored_string("You can't set ship here.", "lightred") + "\n\n Change direction using arrows\n or move origin with WSAD somewhere else."
+        return colored_string("You can't set ship here.", "lightred")
+        + "\n\n Change direction using arrows\n or move origin with WSAD somewhere else."
+
 
 def handle_arrows(user_input, preferred_direction, possible_ship_directions):
     UP_ARROW = "\x1b[A"
@@ -318,20 +323,21 @@ def handle_tab(ship_keys_ordered, ship_types, current_ship_type_index):
         return " Currently selected ship type:\n" + \
             colored_string("    %s (weight: %u)" % (particular_type, ship_types[particular_type]), "yellow")
     else:
-         return " Currently selected ship type:\n    " + colored_string("None", "orange")
+        return " Currently selected ship type:\n    " + colored_string("None", "orange")
+
 
 def handle_enter(
-    board,
-    preferred_direction,
-    possible_ship_directions,
-    ship_types,
-    ship_keys_ordered,
-    used_area_points,
-    current_ship_type_index,
-    created_ships,
-    old_origin_character
-    ):
-    if possible_ship_directions[preferred_direction[0]][0] == True:
+        board,
+        preferred_direction,
+        possible_ship_directions,
+        ship_types,
+        ship_keys_ordered,
+        used_area_points,
+        current_ship_type_index,
+        created_ships,
+        old_origin_character
+        ):
+    if possible_ship_directions[preferred_direction[0]][0]:
         # the preferred direction is viable
         ship_points = possible_ship_directions[preferred_direction[0]][1]
         current_ship_type = ship_keys_ordered[current_ship_type_index[0]]
@@ -373,28 +379,29 @@ def handle_enter(
 
 def draw_sandbox_row_col_marks(sandbox, board_offset):
     # draw column numbers
-    col_num_start_coord = [ board_offset[0], board_offset[1] - 2 ]
+    col_num_start_coord = [board_offset[0], board_offset[1] - 2]
     col_x = col_num_start_coord[0]
     col_y = col_num_start_coord[1]
     for i in range(10):
-        if i + 1 == 10: # two characters
+        # Two characters.
+        if i + 1 == 10:
             numstr = str(i+1)
-            # first character
+            # First character.
             sandbox[col_y][col_x + i] = \
                 numstr[0] if i % 2 == 0 else \
                 colored_string(numstr[0], "lightblue")
-            # second character
+            # Second character.
             sandbox[col_y][col_x + i + 1] = \
                 numstr[1] if i % 2 == 0 else \
                 colored_string(numstr[1], "lightblue")
         else:
-            # single character
+            # Single character.
             sandbox[col_y][col_x + i] = \
                 str(i+1) if i % 2 == 0 else \
                 colored_string(str(i+1), "lightblue")
 
-    # draw row marks
-    row_mark_start_coord = [ board_offset[0] - 2, board_offset[1] ]
+    # Draw row marks.
+    row_mark_start_coord = [board_offset[0] - 2, board_offset[1]]
     row_x = row_mark_start_coord[0]
     row_y = row_mark_start_coord[1]
     for i in range(10):
@@ -404,17 +411,17 @@ def draw_sandbox_row_col_marks(sandbox, board_offset):
 
 
 def get_ship_dictionary_from_user_input():
-    board = ship_generator.__generate_board(10,10)
+    board = ship_generator.__generate_board(10, 10)
     sandbox_fillchar = colored_string(u"\u2591", "lightgrey")
-    sandbox = ship_generator.__generate_board(21,21,sandbox_fillchar)
-    message_board = ship_generator.__generate_board(70,21)
+    sandbox = ship_generator.__generate_board(21, 21, sandbox_fillchar)
+    message_board = ship_generator.__generate_board(70, 21)
     for dx in range(len(sandbox[0])):
         sandbox[0][dx] = " "
 
     for dy in range(len(sandbox)):
         sandbox[dy][0] = " "
 
-    origin_pos = [ 5, 5 ]
+    origin_pos = [5, 5]
     movement_specifiers = ("w", "s", "a", "d")
     TAB = 9
     ENTER = 13
@@ -427,23 +434,23 @@ def get_ship_dictionary_from_user_input():
     RIGHT_ARROW = "\x1b[C"
     arrows = (UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW)
 
-    # default value for ghost ship suggestion
+    # Default value for ghost ship suggestion.
     preferred_direction = ["up"]
-    # possible_ship_directions holds something like this:
+    # Possible_ship_directions holds something like this:
     # "up": [ True, [ ship points ] ]
-    # a boolean indicates whether [ship points] are valid and can be used
+    # a boolean indicates whether [ship points] are valid and can be used.
     possible_ship_directions = {}
 
     ship_types = ship_generator.__get_ship_types()
     ship_keys_ordered = sorted(list(ship_types.keys()))
     current_ship_type_index = [0]
     origin_char = colored_string(u"\u2588", "default")
-    # save the character at which origin character will be placed; it will be restored after a move
+    # Save the character at which origin character will be placed; it will be restored after a move.
     old_origin_character = [board[origin_pos[1]][origin_pos[0]]]
     board[origin_pos[1]][origin_pos[0]] = origin_char
 
     used_area_points = []
-    board_offset = [6,6]
+    board_offset = [6, 6]
 
     draw_sandbox_row_col_marks(sandbox, board_offset)
 
@@ -451,17 +458,17 @@ def get_ship_dictionary_from_user_input():
     can_set_ship_msg = ""
     aux_msg = "Use WSAD to move origin.\n\n Use arrows to choose ship position."
     output_msg = ""
-    # imitate Tab press for initially selected ship type to appear
+    # Imitate Tab press for initially selected ship type to appear.
     ship_type_msg = handle_tab(ship_keys_ordered, ship_types, current_ship_type_index)
     while True:
         os.system("clear")
 
-        # update ghost layer
+        # Update ghost layer.
         ship_length_argument = None
         if ship_types:
             ship_length_argument = ship_types[ship_keys_ordered[current_ship_type_index[0]]]
-        # ghost layer is a board with bare ghost ship outlines, it is laid on top
-        # of a board only where its elements are not NoneType
+        # Ghost layer is a board with bare ghost ship outlines, it is laid on top
+        # of a board only where its elements are not NoneType.
         ghost_layer = get_painted_layer_with_ghost_ships(
             board,
             sandbox,
@@ -482,39 +489,38 @@ def get_ship_dictionary_from_user_input():
         output_msg = ship_type_msg + "\n\n " + can_set_ship_msg + "\n\n " + aux_msg
         set_message(message_board, output_msg)
 
-        # combine sandbox board with board
+        # Combine sandbox board with board.
         combined_sandbox_board = overwrite_board(sandbox, board, board_offset)
-        # overlay ghost_layer on top of that composition
+        # Overlay ghost_layer on top of that composition.
         layered = overlay_board(combined_sandbox_board, ghost_layer)
-        # print a horizontal bind of the above board with message board
+        # Print a horizontal bind of the above board with message board.
         ship_generator.__print_board(bind_maps_horz(layered, message_board))
 
         aux_msg = ""
         if not ship_types:
-            # we've exhausted ship choice, all the available ships have been placed
+            # We've exhausted ship choice, all the available ships have been placed.
             return created_ships
 
-        # take one character from input
+        # Take one character from input.
         user_input = getch_single_character()
         if ord(user_input) == ESCAPE:
-            # we've probably got an arrow press
-            # which takes 3 bytes, take another 2
+            # We've probably got an arrow press which takes 3 bytes, take another 2.
             user_input += getch_two_characters()
 
-        # check input
+        # Check input.
         if ord(user_input[0]) == TAB:
             ship_type_msg = handle_tab(ship_keys_ordered, ship_types, current_ship_type_index)
 
         elif ord(user_input[0]) == ENTER:
             aux_msg = handle_enter(board,
-                preferred_direction,
-                possible_ship_directions,
-                ship_types,
-                ship_keys_ordered,
-                used_area_points,
-                current_ship_type_index,
-                created_ships,
-                old_origin_character)
+                                   preferred_direction,
+                                   possible_ship_directions,
+                                   ship_types,
+                                   ship_keys_ordered,
+                                   used_area_points,
+                                   current_ship_type_index,
+                                   created_ships,
+                                   old_origin_character)
 
             if aux_msg:
                 # if auxiliary message is not empty, a ship was added
@@ -542,4 +548,5 @@ def main():
         print(key.rjust(20), ships[key])
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

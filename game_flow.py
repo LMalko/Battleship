@@ -63,7 +63,6 @@ class GameFlow():
         while len(name) == 0 or len(name) > 15:
             name = input("\n  Choose players name(max 15 chars): ").strip()
         os.system('clear')
-
         return name
 
     @staticmethod
