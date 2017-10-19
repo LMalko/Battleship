@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
 """
 def hall_of_fame(hero, start_time):
-    """ Exports to and reads from hall of fame.txt."""
+    @ tu jest docstring --> Exports to and reads from hall of fame.txt.
     os.system("clear")
     finish_time = datetime.datetime.now()
     # Get rid of microseconds.
