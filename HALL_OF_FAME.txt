@@ -12,5 +12,4 @@
 16                     AgnesEukaliptus        0
 4                      Skończyłeś?            1
 4                      Przestań k&&wa!        0
-25                     Janusz                 3
-22                     1                      1
+
