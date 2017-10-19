@@ -116,7 +116,6 @@ __player.py__
 ###  Human Class
 
 #### Parent Class
-
 	Player
 
 #### Attributes
@@ -209,6 +208,9 @@ __ship.py__#
 
 ###  Destroyer Class
 
+#### Parent Class
+	Ship
+
 #### Attributes
     max_hit_points
 
@@ -217,6 +219,9 @@ __ship.py__#
 
 
 ###  Submarine Class
+
+#### Parent Class
+	Ship
 
 #### Attributes
     max_hit_points
@@ -227,6 +232,9 @@ __ship.py__#
 
 ###  Cruiser Class
 
+#### Parent Class
+	Ship
+	
 #### Attributes
     max_hit_points
 
@@ -236,6 +244,9 @@ __ship.py__#
 
 ###  Battleship Class
 
+#### Parent Class
+	Ship
+	
 #### Attributes
     max_hit_points
 
@@ -245,6 +256,9 @@ __ship.py__#
 
 ###  Carrier Class
 
+#### Parent Class
+	Ship
+	
 #### Attributes
     max_hit_points
 
