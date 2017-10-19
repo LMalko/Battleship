@@ -17,14 +17,12 @@ class Square():
 
         if isinstance(self.associated_class, Ship):
             self.associated_class.decrement_hp()
-            # respond_message = ''
+            self.single_square_hit_count = 1
             if self.associated_class.hit_points == 0:
-                self.single_square_hit_count = 1
                 respond_message = "hit! {} was sunk!".format(self.associated_class.__class__.__name__)
             else:
-                self.single_square_hit_count = 1
                 respond_message = "hit!"
-            
+
         elif self.single_square_hit_count == 0:
             self.single_square_hit_count = 1
             respond_message = "miss!"
@@ -43,5 +41,3 @@ class Square():
             return "X"
         else:
             return "O"
-        
-
