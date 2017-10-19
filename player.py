@@ -221,11 +221,4 @@ class AI(Player, ABrain):
             navy_str += " | {}\n".format(ship)
 
         return navy_str + separator
-#
-# comp = AI()
-# jarek = Human("Jarek")
-# print(comp.board)
-# print(jarek.board)
-# comp.perform_hit(opponent=jarek)
-# jarek.perform_hit(opponent=comp)
-# print(isinstance(comp, Human))
+
