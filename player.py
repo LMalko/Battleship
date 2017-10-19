@@ -77,7 +77,7 @@ class Player():
         Returns dict with ship coordinates, eg.
         {"Destroyer": [[0, 0], [0, 1], "Submarine": ...}
         """
-        self.my_ships = self.__initialize_ship_coordinates()
+        self.my_ships = self._initialize_ship_coordinates()
 
     def fill_list_with_Square_obj(self):
         board_side_length = 10
@@ -202,7 +202,7 @@ class AI(Player, ABrain):
         self.board = Ocean(self.my_ships, self.fields)  # create board
         self.intelligence = iq
 
-    def __initialize_ship_coordinates(self):
+    def _initialize_ship_coordinates(self):
         """
         AI generate ships placement (coordinates).
 
