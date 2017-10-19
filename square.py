@@ -29,7 +29,7 @@ class Square():
             self.single_square_hit_count = 1
             respond_message = "miss!"
         else:
-            respond_message = "you've already been here before. Nothing special happened..."
+            respond_message = "you've already been here."
 
         return respond_message
 
