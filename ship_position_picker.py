@@ -134,10 +134,14 @@ def set_message(msg_board, message):
         while input_idx < len(subline):
             # Escape sequence begin?
             if subline[input_idx] == "\x1b":
-                # take escape + 2 next characters => color
-                color_seq = subline[input_idx:input_idx+5] + " "
+                # take escape + next characters until 'm' => color
+                color_seq = ""
+                while subline[input_idx] != 'm':
+                    color_seq += subline[input_idx]
+                    input_idx += 1
+                color_seq += "m"
                 msg_board[i+1][output_idx] = color_seq
-                input_idx += 5
+                input_idx += 1
             else:
                 msg_board[i+1][output_idx] = subline[input_idx]
                 input_idx += 1
@@ -162,7 +166,8 @@ def get_predefined_color(color):
         "lightblue": "\x1b[94m",
         "pink": "\x1b[95m",
         "lightcyan": "\x1b[96m",
-        "default": "\x1b[0m"
+        "default": "\x1b[0m",
+        "hilite": "\x1b[7m"
     }
     if color not in colors:
         raise KeyError("invalid color specifier")
@@ -316,14 +321,48 @@ def handle_arrows(user_input, preferred_direction, possible_ship_directions):
     return message_is_possible_to_place_ship(preferred_direction, possible_ship_directions)
 
 
-def handle_tab(ship_keys_ordered, ship_types, current_ship_type_index):
+def get_ship_inventory(ship_keys_ordered, ship_types, current_ship_type_index):
+    kind_maxlen = 0
+    for kind in ship_types:
+        if len(kind) > kind_maxlen:
+            kind_maxlen = len(kind)
+
+    indent = " " * 4
+    type_col_name = "Type:"
+    weight_col_name = "Wt:"
+    type_col_ljust = kind_maxlen + 2 * len(indent)
+
+    invt_string = "\n" + (indent + type_col_name).ljust(type_col_ljust) + weight_col_name
+    for i, ship_key in enumerate(ship_keys_ordered):
+        current_ship_type = ship_key
+        current_ship_wt = ship_types[current_ship_type]
+        invt_string += "\n"
+        if i == current_ship_type_index[0]:
+            invt_string += colored_string((" " + indent + \
+                current_ship_type).ljust(type_col_ljust) + str(current_ship_wt), "hilite")
+        else:
+            invt_string += colored_string((indent + \
+                current_ship_type).ljust(type_col_ljust) + str(current_ship_wt), "yellow")
+
+    return invt_string
+
+
+def handle_tab(ship_keys_ordered, ship_types, current_ship_type_index, dont_increment_idx=False):
+    available_types = " Available ship types:"
     if len(ship_keys_ordered):
-        current_ship_type_index[0] = (current_ship_type_index[0]+1) % len(ship_keys_ordered)
-        particular_type = ship_keys_ordered[current_ship_type_index[0]]
-        return " Currently selected ship type:\n" + \
-            colored_string("    %s (weight: %u)" % (particular_type, ship_types[particular_type]), "yellow")
+        if len(ship_keys_ordered) > 1:
+            available_types += " (use Tab to switch)"
+        available_types += "\n"
+        if not dont_increment_idx:
+            current_ship_type_index[0] = (current_ship_type_index[0]+1) % len(ship_keys_ordered)
+
+        if current_ship_type_index[0] not in range(len(ship_keys_ordered)):
+            current_ship_type_index[0] = 0
+
+        available_types += get_ship_inventory(ship_keys_ordered, ship_types, current_ship_type_index)
+        return available_types
     else:
-        return " Currently selected ship type:\n    " + colored_string("None", "orange")
+        return available_types + "\n    " + colored_string("None", "orange")
 
 
 def handle_enter(
@@ -371,7 +410,6 @@ def handle_enter(
         for i in range(len(new_ship_keys)):
             ship_keys_ordered.append(new_ship_keys[i])
 
-        current_ship_type_index[0] = 0
         return colored_string("Added %s, length: %u" % (current_ship_type, len(ship_points)), "cyan")
     else:
         return ""
@@ -459,7 +497,7 @@ def get_ship_dictionary_from_user_input():
     aux_msg = "Use WSAD to move origin.\n\n Use arrows to choose ship position."
     output_msg = ""
     # Imitate Tab press for initially selected ship type to appear.
-    ship_type_msg = handle_tab(ship_keys_ordered, ship_types, current_ship_type_index)
+    ship_type_msg = handle_tab(ship_keys_ordered, ship_types, current_ship_type_index, True)
     while True:
         os.system("clear")
 
@@ -528,7 +566,8 @@ def get_ship_dictionary_from_user_input():
                 ship_type_msg = handle_tab(
                     ship_keys_ordered,
                     ship_types,
-                    current_ship_type_index)
+                    current_ship_type_index,
+                    True) # don't increment selection index, look at handle_tab
 
         elif user_input in arrows:
             can_set_ship_msg = handle_arrows(
@@ -541,9 +580,13 @@ def get_ship_dictionary_from_user_input():
                 board, user_input[0].lower(), origin_char,
                 origin_pos, old_origin_character)
 
+        elif user_input[0] == "x":
+            break
+
 
 def main():
     ships = get_ship_dictionary_from_user_input()
+    print("note: the coordinate pairs have x and y switched")
     for key in ships:
         print(key.rjust(20), ships[key])
 
