@@ -26,7 +26,7 @@ class ABrain():
             coords = self.__check_new_coords(opponent)
         return coords
 
-    def __was_player_hit(self, x_coord, y_coord, opponent):
+    def __will_ship_be_hit(self, x_coord, y_coord, opponent):
         """Check if opponent's ship was hit, returns bool."""
         was_square_used_before = opponent.board.ocean_fields[x_coord][y_coord].single_square_hit_count == 0
         is_ship_on_square = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
@@ -37,28 +37,26 @@ class ABrain():
 
     def __check_new_coords(self, opponent):
         """Return attack coordinates."""
-        if self.intelligence == 3:
-            tries_modifier = 1
+        if self.intelligence >= 3:
+            tries_number = 2
         else:
-            tries_modifier = 0
-        tries_number = self.intelligence + tries_modifier
+            tries_number = 1
         # Starting tmp coords.
         coords = (10, 10)
         for tries in range(tries_number):
-            for check in range(40):
+            for draw in range(100):
                 x_coord = random.randint(0, 9)
                 y_coord = random.randint(0, 9)
                 if self.__check_if_new_coords_in_board_and_not_in_memo(
                                                                     x_coord,
                                                                     y_coord):
-
                     break
-            checker = self.__was_player_hit(x_coord, y_coord, opponent)
+            checker = self.__will_ship_be_hit(x_coord, y_coord, opponent)
             coords = (x_coord, y_coord)
             self.__remember_used_coords(coords, checker)
             if checker:
                 return coords
-        # If can't find any unused field to attack.
+        # If can't find any unused field to attack:
         if coords == (10, 10):
             coords = self.__find_field_in_desperado_mode(opponent)
         return coords
@@ -93,6 +91,13 @@ class ABrain():
                                                         mode="vertical")
             if coords:
                 return coords
+            else:
+                if self.intelligence == 1:
+                    coords = self.__check_new_coords(opponent)
+                    return coords
+                else:
+                    self.__update_last_accurate_coords(opponent)
+        raise BaseException("nie udało mi się zaktualizować!!!")
 
     def __check_if_bother_last_accurate_coords(self, opponent):
         """Check if it makes sense to relate to last accurate shot. Returns bool."""
@@ -118,8 +123,8 @@ class ABrain():
         Check if coordinates are in correct range (0, 9).
         Reason: AI can save them as new result. Returns bool.
         """
-        condition_1 = x_coord in range(0, 9)
-        condition_2 = y_coord in range(0, 9)
+        condition_1 = x_coord in range(0, 10)
+        condition_2 = y_coord in range(0, 10)
         condition_3 = (x_coord, y_coord) not in self.ai_memo
         if condition_1 and condition_2 and condition_3:
             return True
@@ -132,7 +137,6 @@ class ABrain():
         (modify x or y coord) for better accuracy.
         Used while searching ocean_fields near last accurate shoot.
         """
-        coords = False
         if mode == "horizontal":
             coord = y_coord
         else:
@@ -146,7 +150,7 @@ class ABrain():
             if self.__check_if_new_coords_in_board_and_not_in_memo(
                                                             x_coord,
                                                             y_coord):
-                checker = self.__was_player_hit(
+                checker = self.__will_ship_be_hit(
                                                 x_coord,
                                                 y_coord, opponent)
                 coords = (x_coord, y_coord)
@@ -156,13 +160,13 @@ class ABrain():
                         self.should_search_horizontal = True
                     else:
                         self.should_search_vertical = True
-                    return coords
-        if coords is False:
-            self.__update_last_accurate_coords(opponent)
-        return coords
+                    if self.intelligence > 1:
+                        if self.__will_ship_sunk_after_shot(x_coord, y_coord, opponent):
+                            self.__mark_coords_around_the_ship_in_memo(x_coord, y_coord, opponent)
+                return coords
 
     def __find_field_in_desperado_mode(self, opponent):
-        """Search for any field to attack. Iterate over all board."""
+        """Search for any unused field to attack. Iterate over all board. Returns coords (tuple)."""
         x_coord = 0
         y_coord = 0
         coords = (x_coord, y_coord)
@@ -171,21 +175,19 @@ class ABrain():
                 if self.__check_if_new_coords_in_board_and_not_in_memo(
                                                                     x_coord,
                                                                     y_coord):
-                    checker = self.__was_player_hit(x_coord, y_coord, opponent)
+                    checker = self.__will_ship_be_hit(x_coord, y_coord, opponent)
                     coords = (x_coord, y_coord)
                     self.__remember_used_coords(coords, checker)
-                    if checker:
-                        return coords
+                    return coords
                 y_coord += 1
             x_coord += 1
-        return coords
 
     def __is_ship_alive(self, opponent):
         x_coord = self.last_accurate_coords[0]
         y_coord = self.last_accurate_coords[1]
         try:
-            ship_is_alive = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj.hit_points > 0
-            if ship_is_alive:
+            enemy_ship = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
+            if enemy_ship.hit_points > 0:
                 return True
         except:
             self.__forget_horizon_and_vertical()
@@ -198,9 +200,46 @@ class ABrain():
         y_coord = self.last_accurate_coords[1]
         all_accurate_coords = [coords for coords in self.ai_memo if self.ai_memo[coords] is True]
         try:
-            targeted_ship_max_hp = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj.max_hit_points
-            targeted_ship_hp_left = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj.hit_points
-            coords_updater_index = targeted_ship_max_hp - targeted_ship_hp_left
+            enemy_ship = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
+            coords_updater_index = enemy_ship.max_hit_points - enemy_ship.hit_points
             self.last_accurate_coords = all_accurate_coords[-coords_updater_index]
         except:
             pass
+
+    def __will_ship_sunk_after_shot(self, x_coord, y_coord, opponent):
+        try:
+            enemy_ship = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
+            ship_is_close_to_sinking = enemy_ship.hit_points == 1
+            if ship_is_close_to_sinking:
+                return True
+        except:
+            return False
+        return False
+
+    def __take_all_coords_related_to_targeted_ship(self, x_coord, y_coord, opponent):
+        """Create list with all coords related to targeted ship. Returns list."""
+        targeted_ship = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
+        all_accurate_coords = [coords for coords in self.ai_memo if self.ai_memo[coords] is True]
+        all_coords_related_to_the_targeted_ship = []
+        for coords in reversed(all_accurate_coords):
+            x_coord = coords[0]
+            y_coord = coords[1]
+            examined_ship = opponent.board.ocean_fields[x_coord][y_coord].associated_class_obj
+            if examined_ship != targeted_ship:
+                break
+            all_coords_related_to_the_targeted_ship.append(coords)
+        return all_coords_related_to_the_targeted_ship
+
+    def __mark_coords_around_the_ship_in_memo(self, x_coord, y_coord, opponent):
+        """Remember not to use coords near to sunked ship."""
+        coords_related_to_targeted_ship = self.__take_all_coords_related_to_targeted_ship(x_coord, y_coord, opponent)
+        for coords in coords_related_to_targeted_ship:
+            x_coord = coords[0]
+            y_coord = coords[1]
+            coord_modifier = (-1, 2, -1)
+            for x_modifier in coord_modifier:
+                x_coord += x_modifier
+                for y_modifier in coord_modifier:
+                    y_coord += y_modifier
+                    if self.__check_if_new_coords_in_board_and_not_in_memo(x_coord, y_coord):
+                        self.ai_memo[(x_coord, y_coord)] = False
