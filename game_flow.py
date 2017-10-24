@@ -99,8 +99,19 @@ class GameFlow():
             os.system("clear")
             print("\nHALL_OF_FAME:\n")
             print("ID     TURN COUNT             NAME                   TIME IN MINUTES\n\n")
-            HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=False)
+
+            error_free_HALL_OF_FAME = []
+
+            # It's best to check once per line if it will not return error while sorting,
+            # to ensure a well - ordered & crash - free final list.
+            for line in HALL_OF_FAME:
+                try:
+                    if int(line[0]):
+                        error_free_HALL_OF_FAME.append(line)
+                except ValueError:
+                    pass
+
             list_place = 1
-        for line in sorted(HALL_OF_FAME, key=lambda line: int(line.split()[0])):
+        for line in sorted(error_free_HALL_OF_FAME, key=lambda line: int(line.split()[0])):
             print('{:04d}'.format(list_place), ".", "".join(line))
             list_place += 1
