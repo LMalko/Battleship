@@ -228,17 +228,27 @@ def get_painted_layer_with_ghost_ships(
     preferred_direction = chosen_direction[0]
     x = origin_coords[0]
     y = origin_coords[1]
-    # Create coordinate pairs of ghost/ would-be ships.
-    west_option = [[x - solid_sequence_length, y], [x - 1, y]]
-    east_option = [[x + 1, y], [x + solid_sequence_length, y]]
-    north_option = [[x, y - solid_sequence_length], [x, y - 1]]
-    south_option = [[x, y + 1], [x, y + solid_sequence_length]]
+    # Create coordinate pairs of ghost/ would-be ships (without origin).
+    west_option_wo_origin = [[x - solid_sequence_length, y], [x - 1, y]]
+    east_option_wo_origin = [[x + 1, y], [x + solid_sequence_length, y]]
+    north_option_wo_origin = [[x, y - solid_sequence_length], [x, y - 1]]
+    south_option_wo_origin = [[x, y + 1], [x, y + solid_sequence_length]]
+    # Evaluate start-end coordinate pairs into point collections (without origin).
+    west_points_wo_origin = ship_generator.__evaluate_start_end_coords_into_point_list(west_option_wo_origin)
+    east_points_wo_origin = ship_generator.__evaluate_start_end_coords_into_point_list(east_option_wo_origin)
+    north_points_wo_origin = ship_generator.__evaluate_start_end_coords_into_point_list(north_option_wo_origin)
+    south_points_wo_origin = ship_generator.__evaluate_start_end_coords_into_point_list(south_option_wo_origin)
 
-    # Evaluate start-end coordinate pairs into point collections.
-    west_points = ship_generator.__evaluate_start_end_coords_into_point_list(west_option)
-    east_points = ship_generator.__evaluate_start_end_coords_into_point_list(east_option)
-    north_points = ship_generator.__evaluate_start_end_coords_into_point_list(north_option)
-    south_points = ship_generator.__evaluate_start_end_coords_into_point_list(south_option)
+    # Create coordinate pairs of ghost/ would-be ships (WITH origin).
+    west_option_with_origin = [[x - solid_sequence_length, y], [x, y]]
+    east_option_with_origin = [[x, y], [x + solid_sequence_length, y]]
+    north_option_with_origin = [[x, y - solid_sequence_length], [x, y]]
+    south_option_with_origin = [[x, y], [x, y + solid_sequence_length]]
+    # Evaluate start-end coordinate pairs into point collections (WITH origin).
+    west_points_with_origin = ship_generator.__evaluate_start_end_coords_into_point_list(west_option_with_origin)
+    east_points_with_origin = ship_generator.__evaluate_start_end_coords_into_point_list(east_option_with_origin)
+    north_points_with_origin = ship_generator.__evaluate_start_end_coords_into_point_list(north_option_with_origin)
+    south_points_with_origin = ship_generator.__evaluate_start_end_coords_into_point_list(south_option_with_origin)
 
     red = get_predefined_color("lightred")
     green = get_predefined_color("green")
@@ -248,40 +258,28 @@ def get_painted_layer_with_ghost_ships(
     # Adjust_points_color sets direction color to green if these two conditions are met:
     # All ship points lie within board boundaries.
     # None of ship points are at or directly beside any others' points.
-    adjust_points_color(board, west_points, west_option, "West", directed_colors, used_area_points)
-    adjust_points_color(board, east_points, east_option, "East", directed_colors, used_area_points)
-    adjust_points_color(board, north_points, north_option, "North", directed_colors, used_area_points)
-    adjust_points_color(board, south_points, south_option, "South", directed_colors, used_area_points)
+    adjust_points_color(board, west_points_with_origin, west_option_with_origin, "West", directed_colors, used_area_points)
+    adjust_points_color(board, east_points_with_origin, east_option_with_origin, "East", directed_colors, used_area_points)
+    adjust_points_color(board, north_points_with_origin, north_option_with_origin, "North", directed_colors, used_area_points)
+    adjust_points_color(board, south_points_with_origin, south_option_with_origin, "South", directed_colors, used_area_points)
     # Put the points onto the layer.
     fill_block = solid_solid_block if preferred_direction == "left" else blurred_solid_block
-    lay_ghost_points(layer, west_points, fill_block, "West", directed_colors, board_offset)
+    lay_ghost_points(layer, west_points_wo_origin, fill_block, "West", directed_colors, board_offset)
 
     fill_block = solid_solid_block if preferred_direction == "right" else blurred_solid_block
-    lay_ghost_points(layer, east_points, fill_block, "East", directed_colors, board_offset)
+    lay_ghost_points(layer, east_points_wo_origin, fill_block, "East", directed_colors, board_offset)
 
     fill_block = solid_solid_block if preferred_direction == "up" else blurred_solid_block
-    lay_ghost_points(layer, north_points, fill_block, "North", directed_colors, board_offset)
+    lay_ghost_points(layer, north_points_wo_origin, fill_block, "North", directed_colors, board_offset)
 
     fill_block = solid_solid_block if preferred_direction == "down" else blurred_solid_block
-    lay_ghost_points(layer, south_points, fill_block, "South", directed_colors, board_offset)
+    lay_ghost_points(layer, south_points_wo_origin, fill_block, "South", directed_colors, board_offset)
 
     # Update possible_ships_dict.
-    # Adjust start-end ghost ship coordinates to include origin.
-    west_option[1] = origin_coords
-    east_option[0] = origin_coords
-    north_option[1] = origin_coords
-    south_option[0] = origin_coords
-
-    # Re-generate points to include origin.
-    west_points = ship_generator.__evaluate_start_end_coords_into_point_list(west_option)
-    east_points = ship_generator.__evaluate_start_end_coords_into_point_list(east_option)
-    north_points = ship_generator.__evaluate_start_end_coords_into_point_list(north_option)
-    south_points = ship_generator.__evaluate_start_end_coords_into_point_list(south_option)
-
-    possible_ship_directions["left"] = [False if directed_colors["West"] == red else True, west_points]
-    possible_ship_directions["right"] = [False if directed_colors["East"] == red else True, east_points]
-    possible_ship_directions["up"] = [False if directed_colors["North"] == red else True, north_points]
-    possible_ship_directions["down"] = [False if directed_colors["South"] == red else True, south_points]
+    possible_ship_directions["left"] = [False if directed_colors["West"] == red else True, west_points_with_origin]
+    possible_ship_directions["right"] = [False if directed_colors["East"] == red else True, east_points_with_origin]
+    possible_ship_directions["up"] = [False if directed_colors["North"] == red else True, north_points_with_origin]
+    possible_ship_directions["down"] = [False if directed_colors["South"] == red else True, south_points_with_origin]
 
     return layer
 
